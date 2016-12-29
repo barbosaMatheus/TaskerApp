@@ -13,16 +13,16 @@ import android.widget.EditText;
 public class MainActivity extends AppCompatActivity {
 
     public final String help_message = "Welcome, and thank you for downloading Tasker!\n\n" +
-            "\n\nTo set an alarm go to the alarm screen by clicking on \"ALARM\" on the main " +
+            "To set an alarm go to the alarm screen by clicking on \"ALARM\" on the main " +
             "screen. Once in the alarm screen, choose a time using the time picker and make " +
             "sure the \"SET\" button is toggled on. Toggle the button off to deactivate the" +
             " alarm.\n\nTo manage your tasks go to the tasks screen by clicking on \"TASKS\"" +
             " on the main screen. Once in the tasks screen you can add entries by clicking " +
             "\"ADD\" or clear all entries by double-clicking \"CLEAR ALL\". To clear only " +
-            " certain entries, single-click to highlight each entry and press \"CLEAR\" to " +
+            "certain entries, single-click to highlight each entry and press \"CLEAR\" to " +
             "clear the highlighted entries. You may also edit entries after adding them by " +
-            "holding down (long-pressing) on the entry and a pop-up window will appear on " +
-            "screen.\n\nFor questions/issues please e-mail Matheus (asaph@okstate.edu)";
+            "holding down (long-pressing) on the entry and a pop-up window will appear on-" +
+            "screen.\n\nFor questions/issues please e-mail Matheus (asaph@okstate.edu).";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
