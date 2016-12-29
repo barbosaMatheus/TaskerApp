@@ -78,7 +78,7 @@ public class Tasks extends ListActivity {
         task_list.setOnItemLongClickListener( new AdapterView.OnItemLongClickListener( ) {
             @Override
             public boolean onItemLongClick( AdapterView<?> arg0, View view, final int pos, long id ) {
-                show_pop_up( pos );                              //show the pop up to edit text
+                show_edit_pop_up( pos );                         //show the pop up to edit text
                 task_list.refreshDrawableState( );               //redraw list
                 return true;                                     //return true for some reason
             }
@@ -90,9 +90,36 @@ public class Tasks extends ListActivity {
         clear_cycle.run( );
     }
 
+    //shows pop up to add new item
+    //to the list
+    public void show_add_pop_up( ) {
+        //create and set up dialog box object
+        AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
+        pop_up.setTitle( "Add Entry" );
+        pop_up.setMessage( "Enter your text below and press \'OK\'" );
+
+        //create edit text object
+        final EditText input = new EditText( this );
+        pop_up.setView( input );
+
+        //set up buttons for dialog box
+        pop_up.setPositiveButton( "OK", new DialogInterface.OnClickListener( ) {
+            @Override
+            public void onClick( DialogInterface dialog, int which ) {
+                current_tasks.add( new Task( input.getText( ).toString( ) ) );
+                task_list.setAdapter( get_list_adapter( ) );     //get a new adapter
+                update_storage( );                               //update internal storage
+            }
+        } );
+        pop_up.setNegativeButton( "Cancel", null );
+
+        //show pop-up
+        pop_up.show( );
+    }
+
     //shows pop up on long press so the
     //user can edit task contents
-    public void show_pop_up( int pos ) {
+    public void show_edit_pop_up( int pos ) {
         //create and set up dialog box object
         AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
         pop_up.setTitle( "Edit Entry" );
@@ -197,13 +224,15 @@ public class Tasks extends ListActivity {
             update_storage( );                                        //update internal storage
         }
         else if( view == this.findViewById( R.id.add_button ) ) {   //if add is pressed
-            Intent intent = new Intent( this, AddTask.class );      //create intent object
+            /*Intent intent = new Intent( this, AddTask.class );      //create intent object
             intent.putExtra( "size", current_tasks.size( ) );       //send size of array list with intent
             for( int i = 0; i < current_tasks.size( ); ++i ) {      //loop through array list and but objects in intent
                 String key = "task_" + Integer.toString( i );       //create key
                 intent.putExtra( key, current_tasks.get( i ) );     //add object to intent
             }
-            startActivityForResult( intent, 1 );                    //start Add task activity for result with id "1"
+            startActivityForResult( intent, 1 );                    //start Add task activity for result with id "1"*/
+            show_add_pop_up( );                                     //show the add pop-up
+            task_list.refreshDrawableState( );                      //redraw list
         }
     }
 
