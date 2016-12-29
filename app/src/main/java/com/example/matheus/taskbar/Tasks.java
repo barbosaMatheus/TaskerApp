@@ -7,10 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.DialogPreference;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -208,7 +205,7 @@ public class Tasks extends ListActivity {
                 update_storage( );                              //update internal storage
                 clicked_clear_once = false;                     //reset flag
             } else {
-                Toast.makeText( getApplicationContext( ), "Double-click \'CLEAR ALL\' to clear all entries", Toast.LENGTH_LONG ).show( );
+                Toast.makeText( getApplicationContext( ), "Double-click", Toast.LENGTH_SHORT ).show( );
                 clicked_clear_once = true;
             }
         }

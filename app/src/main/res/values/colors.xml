@@ -3,6 +3,7 @@
     <color name="colorPrimary">#660000</color>
     <color name="colorPrimaryDark">#440000</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="selected_row">#FF9999</color>
+    <color name="selected_row">#ff9999</color>
     <color name="light_purple">#CC99FF</color>
+    <color name="dimgray">#A7A7A7</color>
 </resources>
