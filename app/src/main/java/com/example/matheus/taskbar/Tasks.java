@@ -2,15 +2,19 @@ package com.example.matheus.taskbar;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.DialogPreference;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -19,14 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class Tasks extends ListActivity {
 
     public ArrayList<Task> current_tasks;           //holds task objects
     public List<Map<String, String>> tasks;         //array list to hold info for ListView
     ListView task_list;                             //ListView instance
     public boolean clicked_clear_once = false;      //true if the clear button has been clicked once
-    public Handler handler;                         //handles  a background activity
+    public Handler handler;                         //handles a background activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +73,55 @@ public class Tasks extends ListActivity {
             }
         } );
 
+        //setting long click listener to edit text
+        task_list.setLongClickable( true );
+        task_list.setOnItemLongClickListener( new AdapterView.OnItemLongClickListener( ) {
+            @Override
+            public boolean onItemLongClick( AdapterView<?> arg0, View view, final int pos, long id ) {
+                show_pop_up( pos );                              //show the pop up to edit text
+                task_list.refreshDrawableState( );               //redraw list
+                return true;                                     //return true for some reason
+            }
+        } );
+
         //start the background task that just resets
         //the click flag for the Clear All button
         handler = new Handler( );
         clear_cycle.run( );
     }
 
+    //shows pop up on long press so the
+    //user can edit task contents
+    public void show_pop_up( int pos ) {
+        //create and set up dialog box object
+        AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
+        pop_up.setTitle( "Edit Entry" );
+        pop_up.setMessage( "Edit your entry below and press \'OK\'" );
+
+        //create edit text object and fill with
+        //current task contents to be in dialog box
+        final EditText input = new EditText( this );
+        final int _pos = pos;
+        input.setText( current_tasks.get( pos ).description );
+        pop_up.setView( input );
+
+        //set up buttons for dialog box
+        pop_up.setPositiveButton( "OK", new DialogInterface.OnClickListener( ) {
+            @Override
+            public void onClick( DialogInterface dialog, int which ) {
+                current_tasks.get( _pos ).description = input.getText( ).toString( );
+                task_list.setAdapter( get_list_adapter( ) );     //get a new adapter
+                update_storage( );                               //update internal storage
+            }
+        } );
+        pop_up.setNegativeButton( "Cancel", null );
+
+        //show pop-up
+        pop_up.show( );
+    }
+
+    //destructor overridden so we
+    //can stop the background task
     @Override
     public void onDestroy( ) {
         super.onDestroy( );
@@ -135,7 +181,7 @@ public class Tasks extends ListActivity {
                 update_storage( );                              //update internal storage
                 clicked_clear_once = false;                     //reset flag
             } else {
-                Toast.makeText( getApplicationContext( ), "Press \'clear all\' again to clear all", Toast.LENGTH_LONG ).show( );
+                Toast.makeText( getApplicationContext( ), "Double-click \'CLEAR ALL\' to clear all entries", Toast.LENGTH_LONG ).show( );
                 clicked_clear_once = true;
             }
         }
@@ -154,7 +200,7 @@ public class Tasks extends ListActivity {
             Intent intent = new Intent( this, AddTask.class );      //create intent object
             intent.putExtra( "size", current_tasks.size( ) );       //send size of array list with intent
             for( int i = 0; i < current_tasks.size( ); ++i ) {      //loop through array list and but objects in intent
-                String key = "task_" +Integer.toString( i );        //create key
+                String key = "task_" + Integer.toString( i );       //create key
                 intent.putExtra( key, current_tasks.get( i ) );     //add object to intent
             }
             startActivityForResult( intent, 1 );                    //start Add task activity for result with id "1"
@@ -187,7 +233,7 @@ public class Tasks extends ListActivity {
         }
     }
 
-    //gets data from the "shared preferences"
+    //gets data from "shared preferences"
     //and updates the array list
     public void update_list( ) {
         SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
