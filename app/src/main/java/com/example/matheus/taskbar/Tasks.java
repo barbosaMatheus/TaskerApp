@@ -1,30 +1,32 @@
 package com.example.matheus.taskbar;
 
 import android.app.ListActivity;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.os.Bundle;
-        import android.support.v7.app.AppCompatActivity;
-        import android.util.Log;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.AdapterView;
-        import android.widget.ListView;
-        import android.widget.SimpleAdapter;
-        import android.widget.Toast;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-        import java.util.ArrayList;
-        import java.util.HashMap;
-        import java.util.List;
-        import java.util.Map;
 
 public class Tasks extends ListActivity {
 
-    public ArrayList<Task> current_tasks;                   //holds task objects
-    public List<Map<String, String>> tasks;                 //array list to hold info for ListView
-    ListView task_list;                                     //ListView instance
-    public boolean clicked_clear_once = false;              //true if the clear button has been clicked once
+    public ArrayList<Task> current_tasks;           //holds task objects
+    public List<Map<String, String>> tasks;         //array list to hold info for ListView
+    ListView task_list;                             //ListView instance
+    public boolean clicked_clear_once = false;      //true if the clear button has been clicked once
+    public Handler handler;                         //handles  a background activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,17 @@ public class Tasks extends ListActivity {
                 task_list.refreshDrawableState( );
             }
         } );
+
+        //start the background task that just resets
+        //the click flag for the Clear All button
+        handler = new Handler( );
+        clear_cycle.run( );
+    }
+
+    @Override
+    public void onDestroy( ) {
+        super.onDestroy( );
+        handler.removeCallbacks( clear_cycle );
     }
 
     //returns an adapter object based on modified task data
@@ -219,4 +232,16 @@ public class Tasks extends ListActivity {
         update_storage( );
         finish( );
     }
+
+    //Object for the background activity
+    Runnable clear_cycle = new Runnable( ) {
+        @Override
+        public void run( ) {
+            try {
+                clicked_clear_once = false;  //reset the clicked flag for Clear All
+            } finally {
+                handler.postDelayed( clear_cycle, 2000 );
+            }
+        }
+    };
 }
