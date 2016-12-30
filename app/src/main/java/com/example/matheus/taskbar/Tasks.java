@@ -101,6 +101,7 @@ public class Tasks extends ListActivity {
         //create and set up dialog box object
         AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
         pop_up.setTitle( "Add Entry" );
+        pop_up.setIcon( R.drawable.logo );
         pop_up.setMessage( "Enter your text below and press \'OK\'" );
 
         //create edit text object
@@ -138,6 +139,7 @@ public class Tasks extends ListActivity {
         //create and set up dialog box object
         AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
         pop_up.setTitle( "Edit Entry" );
+        pop_up.setIcon( R.drawable.logo );
         pop_up.setMessage( "Edit your entry below and press \'OK\'" );
 
         //create edit text object and fill with

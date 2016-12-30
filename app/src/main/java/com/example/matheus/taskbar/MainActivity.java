@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         //create and set up dialog box object
         AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
         pop_up.setTitle( app_name_str + " Help" );
+        pop_up.setIcon( R.drawable.logo );
         pop_up.setMessage( help_message );
 
         //set up buttons for dialog box
