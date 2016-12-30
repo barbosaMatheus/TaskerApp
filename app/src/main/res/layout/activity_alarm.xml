@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/saved_1" />
+        android:id="@+id/saved_1"
+        android:background="@android:drawable/btn_default" />
 
     <Button
         android:text="3"
@@ -30,7 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/saved_3" />
+        android:id="@+id/saved_3"
+        android:background="@android:drawable/btn_default" />
 
     <ToggleButton
         android:text="ToggleButton"
@@ -49,5 +51,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/saved_2"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@android:drawable/btn_default" />
 </RelativeLayout>
