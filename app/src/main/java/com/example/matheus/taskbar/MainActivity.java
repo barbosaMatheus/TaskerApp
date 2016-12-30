@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             show_help_pop( );
         }
         else if( view == this.findViewById( R.id.alarm_button ) ) { //if alarm is pressed
-            Toast.makeText( getApplicationContext( ), "alarm feature not implemented yet", Toast.LENGTH_SHORT ).show( );
+            //Toast.makeText( getApplicationContext( ), "alarm feature not implemented yet", Toast.LENGTH_SHORT ).show( );
             Intent intent = new Intent( this, Alarm.class );
             startActivity( intent );
         }

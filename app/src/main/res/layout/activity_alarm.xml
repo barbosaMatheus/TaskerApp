@@ -43,7 +43,8 @@
         android:textOn="alarm set"
         android:layout_below="@+id/alarm_time"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp" />
+        android:layout_marginTop="22dp"
+        android:onClick="on_toggle" />
 
     <Button
         android:text="2"
