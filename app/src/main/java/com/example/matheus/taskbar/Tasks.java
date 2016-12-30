@@ -104,7 +104,14 @@ public class Tasks extends ListActivity {
         pop_up.setPositiveButton( "OK", new DialogInterface.OnClickListener( ) {
             @Override
             public void onClick( DialogInterface dialog, int which ) {
-                current_tasks.add( new Task( input.getText( ).toString( ) ) );
+                final String text = input.getText( ).toString( );
+                if( text.isEmpty( ) ) { //check for no text
+                    Toast.makeText( getApplicationContext( ), "cannot add empty",
+                            Toast.LENGTH_SHORT ).show( );
+                    return; //leave so we don't take any info
+                }
+
+                current_tasks.add( new Task( text ) );
                 task_list.setAdapter( get_list_adapter( ) );     //get a new adapter
                 update_storage( );                               //update internal storage
             }
@@ -137,7 +144,14 @@ public class Tasks extends ListActivity {
         pop_up.setPositiveButton( "OK", new DialogInterface.OnClickListener( ) {
             @Override
             public void onClick( DialogInterface dialog, int which ) {
-                current_tasks.get( _pos ).description = input.getText( ).toString( );
+                final String text = input.getText( ).toString( );
+                if( text.isEmpty( ) ) { //check for no text
+                    Toast.makeText( getApplicationContext( ), "cannot add empty",
+                            Toast.LENGTH_SHORT ).show( );
+                    return; //leave so we don't take any info
+                }
+
+                current_tasks.get( _pos ).description = text;
                 task_list.setAdapter( get_list_adapter( ) );     //get a new adapter
                 update_storage( );                               //update internal storage
             }
