@@ -205,7 +205,7 @@ public class Tasks extends ListActivity {
                 update_storage( );                              //update internal storage
                 clicked_clear_once = false;                     //reset flag
             } else {
-                Toast.makeText( getApplicationContext( ), "Double-click", Toast.LENGTH_SHORT ).show( );
+                Toast.makeText( getApplicationContext( ), "double-click", Toast.LENGTH_SHORT ).show( );
                 clicked_clear_once = true;
             }
         }
