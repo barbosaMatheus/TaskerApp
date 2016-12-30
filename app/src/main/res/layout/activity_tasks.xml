@@ -17,8 +17,7 @@ tools:context="com.example.matheus.taskbar.Tasks" >
     android:layout_centerHorizontal="true"
     android:id="@+id/clear_button"
     android:onClick="button_click_listener"
-    android:background="@android:color/black"
-    style="@style/Widget.AppCompat.Button.Colored" />
+    android:background="?attr/colorButtonNormal" />
 
 <Button
     android:text="Clear All"
@@ -28,8 +27,7 @@ tools:context="com.example.matheus.taskbar.Tasks" >
     android:layout_alignParentEnd="true"
     android:id="@+id/ca_button"
     android:onClick="button_click_listener"
-    android:background="@android:color/black"
-    style="@style/Widget.AppCompat.Button.Colored" />
+    android:background="?attr/colorButtonNormal" />
 
 <Button
     android:text="Add"
@@ -39,8 +37,7 @@ tools:context="com.example.matheus.taskbar.Tasks" >
     android:layout_alignParentStart="true"
     android:id="@+id/add_button"
     android:onClick="button_click_listener"
-    android:background="@android:color/black"
-    style="@style/Widget.AppCompat.Button.Colored" />
+    android:background="?attr/colorButtonNormal" />
 
 <ListView
     android:layout_width="match_parent"

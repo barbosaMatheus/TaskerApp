@@ -53,5 +53,6 @@
         android:layout_below="@+id/tasks_button"
         android:layout_alignStart="@+id/tasks_button"
         android:background="@android:color/black"
-        style="@style/Widget.AppCompat.Button.Colored" />
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:onClick="button_click_listener" />
 </RelativeLayout>
