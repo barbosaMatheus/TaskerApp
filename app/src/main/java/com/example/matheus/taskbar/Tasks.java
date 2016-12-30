@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -109,9 +110,12 @@ public class Tasks extends ListActivity {
             }
         } );
         pop_up.setNegativeButton( "Cancel", null );
+        final AlertDialog alert = pop_up.create( );
+        //force the keyboard to come up
+        alert.getWindow( ).setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE );
 
         //show pop-up
-        pop_up.show( );
+        alert.show( );
     }
 
     //shows pop up on long press so the
@@ -139,9 +143,12 @@ public class Tasks extends ListActivity {
             }
         } );
         pop_up.setNegativeButton( "Cancel", null );
+        final AlertDialog alert = pop_up.create( );
+        //forces keyboard to come up
+        alert.getWindow( ).setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE );
 
         //show pop-up
-        pop_up.show( );
+        alert.show( );
     }
 
     //destructor overridden so we
