@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
             "sure the \"SET\" button is toggled on. Toggle the button off to deactivate the" +
             " alarm.\n\nTo manage your tasks go to the tasks screen by clicking \"TASKS\" " +
             "on the main screen. Once on the tasks screen you can add entries by clicking " +
-            "\"ADD\" or clear all entries by double-clicking \"CLEAR ALL\". To clear only " +
+            "\"ADD\" or clear all entries by holding down \"CLEAR ALL\". To clear only " +
             "certain entries, click to highlight each entry and click \"CLEAR\" to clear " +
             "the highlighted entries. You may also edit entries after adding them by " +
             "holding down (long-click) on the entry and a pop-up window will appear on-" +
