@@ -6,12 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -26,8 +26,6 @@ public class Tasks extends ListActivity {
     public ArrayList<Task> current_tasks;           //holds task objects
     public List<Map<String, String>> tasks;         //array list to hold info for ListView
     ListView task_list;                             //ListView instance
-    public boolean clicked_clear_once = false;      //true if the clear button has been clicked once
-    public Handler handler;                         //handles a background activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +80,19 @@ public class Tasks extends ListActivity {
             }
         } );
 
-        //start the background task that just resets
-        //the click flag for the Clear All button
-        handler = new Handler( );
-        clear_cycle.run( );
+        //setting up long click listener
+        //for the clear all button
+        Button clear_all = ( Button ) this.findViewById( R.id.ca_button );
+        clear_all.setOnLongClickListener( new View.OnLongClickListener( ) {
+            @Override
+            public boolean onLongClick(View view) {
+                current_tasks.clear( );                         //clear all contents
+                task_list.setAdapter( get_list_adapter( ) );    //make new adapter
+                update_storage( );                              //update internal storage
+                task_list.refreshDrawableState( );              //redraw list
+                return true;
+            }
+        } );
     }
 
     //shows pop up to add new item
@@ -165,14 +172,6 @@ public class Tasks extends ListActivity {
         alert.show( );
     }
 
-    //destructor overridden so we
-    //can stop the background task
-    @Override
-    public void onDestroy( ) {
-        super.onDestroy( );
-        handler.removeCallbacks( clear_cycle );
-    }
-
     //returns an adapter object based on modified task data
     public SimpleAdapter get_list_adapter( ) {
         //clear the List first
@@ -219,16 +218,7 @@ public class Tasks extends ListActivity {
     public void button_click_listener( View view ) {
         if( view == this.findViewById( R.id.ca_button ) ) { //if clear all is pressed
             if( current_tasks.isEmpty( ) );                     //does nothing for an empty list
-            else if( clicked_clear_once ) {                     //this prevents an accidental clear all
-                current_tasks.clear( );                         //clear all contents
-                task_list.setAdapter( get_list_adapter( ) );    //make new adapter
-                task_list.refreshDrawableState( );              //redraw list
-                update_storage( );                              //update internal storage
-                clicked_clear_once = false;                     //reset flag
-            } else {
-                Toast.makeText( getApplicationContext( ), "double-click", Toast.LENGTH_SHORT ).show( );
-                clicked_clear_once = true;
-            }
+            Toast.makeText( getApplicationContext( ), "hold down to clear all", Toast.LENGTH_SHORT ).show( );
         }
         else if( view == this.findViewById( R.id.clear_button ) ) {   //if clear is pressed
             for( int i = 0; i < current_tasks.size( ); ++i ) {        //remove the selected task objects
@@ -325,16 +315,4 @@ public class Tasks extends ListActivity {
         update_storage( );
         finish( );
     }
-
-    //Object for the background activity
-    Runnable clear_cycle = new Runnable( ) {
-        @Override
-        public void run( ) {
-            try {
-                clicked_clear_once = false;  //reset the clicked flag for Clear All
-            } finally {
-                handler.postDelayed( clear_cycle, 2000 );
-            }
-        }
-    };
 }

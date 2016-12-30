@@ -27,7 +27,8 @@ tools:context="com.example.matheus.taskbar.Tasks" >
     android:layout_alignParentEnd="true"
     android:id="@+id/ca_button"
     android:onClick="button_click_listener"
-    android:background="@android:drawable/btn_default" />
+    android:background="@android:drawable/btn_default"
+    android:longClickable="true" />
 
     <ListView
     android:layout_width="match_parent"
