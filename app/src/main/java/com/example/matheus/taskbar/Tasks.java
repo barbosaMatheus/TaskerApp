@@ -32,7 +32,7 @@ public class Tasks extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
 
-        //initialize globals
+        //initialize members
         current_tasks = new ArrayList<>( );
         tasks = new ArrayList<>( );
         task_list = (ListView) this.findViewById( android.R.id.list );
@@ -189,7 +189,7 @@ public class Tasks extends ListActivity {
             String subtitle =  current_tasks.get( i ).completed ? "Completed" : "Pending";   //build subtitle
             task_data.put( "title", title );                                            //put these in the map
             task_data.put( "subtitle", subtitle );
-            tasks.add( task_data );                                                     //add map to the item (map) to the list
+            tasks.add( task_data );                                                     //add map to the item (map) list
         }
 
         //then create, set up and return new list adapter
