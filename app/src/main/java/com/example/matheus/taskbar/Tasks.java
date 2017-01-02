@@ -26,6 +26,7 @@ public class Tasks extends ListActivity {
     public ArrayList<Task> current_tasks;           //holds task objects
     public List<Map<String, String>> tasks;         //array list to hold info for ListView
     ListView task_list;                             //ListView instance
+    public int alarms_set;                          //number of alarms we have set
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -290,6 +291,11 @@ public class Tasks extends ListActivity {
             String key = "task_" + Integer.toString( i );                       //create key
             current_tasks.add( new Task( sp_file.getString( key, "" ) ) );      //add data to array list
         }
+
+        //also we need to know how
+        //many alarms are set in case
+        //we need to clear the data
+        alarms_set = sp_file.getInt( "alarms_set", -1 );
     }
 
     //updates the persistent data based
@@ -298,9 +304,10 @@ public class Tasks extends ListActivity {
         SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
         SharedPreferences.Editor editor = sp_file.edit( );                      //make editor object
         editor.clear( );                                                        //clear all current data
-        editor.commit( );                                                       //commit changes right away
+        editor.apply( );                                                        //commit changes right away
 
         editor.putInt( "size", current_tasks.size( ) );                         //write new size
+        editor.putInt( "alarms_set", alarms_set );
         editor.apply( );
 
         for( int i = 0; i < current_tasks.size( ); ++i ) {                      //loop through array list

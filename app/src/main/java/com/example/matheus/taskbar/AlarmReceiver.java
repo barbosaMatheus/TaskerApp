@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.content.WakefulBroadcastReceiver;
-
-/**
- * Created by matheus on 12/30/16.
- */
+import android.widget.Toast;
 
 public class AlarmReceiver extends WakefulBroadcastReceiver {
 
@@ -27,11 +25,14 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         }
         Ringtone ringtone = RingtoneManager.getRingtone( context, alarmUri );
         ringtone.play( );
+        final long start = System.currentTimeMillis( );
+        while( ( System.currentTimeMillis( ) - start ) < 10000 );
+        ringtone.stop( );
 
         //this will send a notification message
-        ComponentName comp = new ComponentName( context.getPackageName( ),
+        /*ComponentName comp = new ComponentName( context.getPackageName( ),
                 AlarmService.class.getName( ) );
         startWakefulService( context, ( intent.setComponent( comp ) ) );
-        setResultCode( Activity.RESULT_OK );
+        setResultCode( Activity.RESULT_OK );*/
     }
 }
