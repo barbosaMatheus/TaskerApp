@@ -15,6 +15,8 @@ import android.widget.ToggleButton;
 
 import java.util.Calendar;
 
+//TODO: comment this damn file
+
 public class Alarm extends AppCompatActivity {
     AlarmManager alarm_manager;
     private PendingIntent pending_intent;
