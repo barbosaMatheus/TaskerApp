@@ -59,7 +59,7 @@ public class Alarm extends AppCompatActivity {
             calendar.set( Calendar.MINUTE, time_picker.getMinute( ) );
             Intent intent = new Intent( Alarm.this, AlarmReceiver.class );
             pending_intent = PendingIntent.getBroadcast( Alarm.this, 0, intent, 0 );
-            alarm_manager.setExact( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis( )-20000, pending_intent );
+            alarm_manager.setExact( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis( )-25000, pending_intent );
             alarm_set = 1;
             Toast.makeText( getApplicationContext( ), "alarm is set", Toast.LENGTH_SHORT ).show( );
             update_storage( );
