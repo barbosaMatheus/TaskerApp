@@ -1,12 +1,12 @@
 package com.example.matheus.taskbar;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -21,12 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Tasks extends ListActivity {
+public class Tasks extends AppCompatActivity {
 
     public ArrayList<Task> current_tasks;           //holds task objects
     public List<Map<String, String>> tasks;         //array list to hold info for ListView
     ListView task_list;                             //ListView instance
-    public int alarms_set;                          //number of alarms we have set
+    public int size;                                //number of saved tasks
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class Tasks extends ListActivity {
         //initialize members
         current_tasks = new ArrayList<>( );
         tasks = new ArrayList<>( );
-        task_list = (ListView) this.findViewById( android.R.id.list );
+        task_list = (ListView) this.findViewById( R.id.list );
 
         //Idk what this is but cell color changing doesn't work without it
         task_list.setDescendantFocusability( ViewGroup.FOCUS_BLOCK_DESCENDANTS );
@@ -129,6 +129,7 @@ public class Tasks extends ListActivity {
         final AlertDialog alert = pop_up.create( );
         //force the keyboard to come up
         alert.getWindow( ).setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE );
+        alert.setCanceledOnTouchOutside( false ); //prevent the user from "touching out" of the view
 
         //show pop-up
         alert.show( );
@@ -170,6 +171,7 @@ public class Tasks extends ListActivity {
         final AlertDialog alert = pop_up.create( );
         //forces keyboard to come up
         alert.getWindow( ).setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE );
+        alert.setCanceledOnTouchOutside( false );  //prevents user from "touching out"  of the view
 
         //show pop-up
         alert.show( );
@@ -179,7 +181,7 @@ public class Tasks extends ListActivity {
     public SimpleAdapter get_list_adapter( ) {
         //clear the List first
         tasks.clear( );
-
+        size = current_tasks.size( );
         //repopulate the list
         for( int i = 0; i < current_tasks.size( ); ++i ) {
             //String key = "task_" + Integer.toString( i+1 );                           //the key for the ith object is 'task_i'
@@ -277,7 +279,7 @@ public class Tasks extends ListActivity {
     //and updates the array list
     public void update_list( ) {
         SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
-        int size = sp_file.getInt( "size", 0 );                                 //get size from the file
+        size = sp_file.getInt( "size", 0 );                                     //get size from the file
         if( size < 1 ) {                                                        //if empty we make a new field called size
             SharedPreferences.Editor editor = sp_file.edit( );
             editor.putInt( "size", 0 );
@@ -291,11 +293,6 @@ public class Tasks extends ListActivity {
             String key = "task_" + Integer.toString( i );                       //create key
             current_tasks.add( new Task( sp_file.getString( key, "" ) ) );      //add data to array list
         }
-
-        //also we need to know how
-        //many alarms are set in case
-        //we need to clear the data
-        alarms_set = sp_file.getInt( "alarms_set", -1 );
     }
 
     //updates the persistent data based
@@ -303,12 +300,16 @@ public class Tasks extends ListActivity {
     public void update_storage( ) {
         SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
         SharedPreferences.Editor editor = sp_file.edit( );                      //make editor object
-        editor.clear( );                                                        //clear all current data
-        editor.apply( );                                                        //commit changes right away
+
+        for( int i = 0; i < size; ++i ) {                                       //remove only task objects
+            final String key = "task_" + Integer.toString( i );
+            editor.remove( key );
+            editor.apply( );                                                    //apply changes
+        }
 
         editor.putInt( "size", current_tasks.size( ) );                         //write new size
-        editor.putInt( "alarms_set", alarms_set );
         editor.apply( );
+        size = current_tasks.size( );                                           //update size
 
         for( int i = 0; i < current_tasks.size( ); ++i ) {                      //loop through array list
             String key = "task_" + Integer.toString( i );                       //create key
@@ -321,6 +322,7 @@ public class Tasks extends ListActivity {
     //when the home button is pressed
     @Override
     public void onBackPressed( ) {
+        super.onBackPressed( );
         update_storage( );
         finish( );
     }

@@ -20,14 +20,17 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
         //this will sound the alarm once
         Uri alarmUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_ALARM );
-        if ( alarmUri == null ) {
+        /*if ( alarmUri == null ) {
             alarmUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_NOTIFICATION );
-        }
+        }*/
         Ringtone ringtone = RingtoneManager.getRingtone( context, alarmUri );
         ringtone.play( );
-        final long start = System.currentTimeMillis( );
+        Intent intent2 = new Intent( context, Alarm.class );
+        intent.putExtra( "ring", true );
+        context.startActivity( intent2 );
+        /*final long start = System.currentTimeMillis( );
         while( ( System.currentTimeMillis( ) - start ) < 10000 );
-        ringtone.stop( );
+        ringtone.stop( );*/
 
         //this will send a notification message
         /*ComponentName comp = new ComponentName( context.getPackageName( ),

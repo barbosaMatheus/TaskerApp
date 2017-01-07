@@ -36,6 +36,18 @@ public class Alarm extends AppCompatActivity {
         else toggle.setChecked( false );
 
         //TODO: fix so we don't have to see this message
+
+        //trying something
+        if( getIntent( ).getBooleanExtra( "ring", false ) ) {
+            AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
+            pop_up.setTitle( "Alarm" );
+            pop_up.setIcon( R.drawable.logo );
+            pop_up.setMessage( "Your alarm has gone off, click below to disable it" );
+
+            //set up buttons for dialog box
+            pop_up.setPositiveButton( "OK", null );
+        }
+
         //create and set up dialog box object
         AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
         pop_up.setTitle( "Information" );

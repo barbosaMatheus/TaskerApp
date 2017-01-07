@@ -12,16 +12,6 @@
     tools:context="com.example.matheus.taskbar.MainActivity"
     android:background="@drawable/background">
 
-    <Button
-        android:text="Tasks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/tasks_button"
-        android:onClick="button_click_listener"
-        android:background="@android:drawable/btn_default" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,24 +22,46 @@
         android:layout_centerHorizontal="true" />
 
     <Button
+        android:text="Tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tasks_button"
+        android:onClick="button_click_listener"
+        android:background="@android:drawable/btn_default"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp" />
+
+    <Button
+        android:text="alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/slist_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:id="@+id/alarm_button"
+        android:background="@android:drawable/btn_default"
+        android:onClick="button_click_listener" />
+
+    <Button
         android:text="Help"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/help_button"
-        android:layout_below="@+id/alarm_button"
-        android:layout_alignStart="@+id/alarm_button"
-        android:layout_marginTop="38dp"
         android:onClick="button_click_listener"
-        android:background="@android:drawable/btn_default" />
+        android:background="@android:drawable/btn_default"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/alarm_button"
+        android:layout_alignStart="@+id/tasks_button" />
 
     <Button
-        android:text="Alarm"
+        android:text="Shopping List"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
-        android:id="@+id/alarm_button"
-        android:layout_below="@+id/tasks_button"
-        android:layout_alignStart="@+id/tasks_button"
+        android:layout_marginTop="25dp"
+        android:id="@+id/slist_button"
         android:background="@android:drawable/btn_default"
-        android:onClick="button_click_listener" />
+        android:onClick="button_click_listener"
+        android:layout_below="@+id/tasks_button"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
