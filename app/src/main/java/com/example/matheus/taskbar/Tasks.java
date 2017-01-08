@@ -105,6 +105,7 @@ public class Tasks extends AppCompatActivity {
 
         //create edit text object
         final EditText input = new EditText( this );
+        input.setHint( "task description" );
         pop_up.setView( input );
 
         //set up buttons for dialog box
