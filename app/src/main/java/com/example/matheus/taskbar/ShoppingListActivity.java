@@ -2,6 +2,7 @@ package com.example.matheus.taskbar;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list);
+        getSupportActionBar( ).setTitle( "Shopping List" );
 
         //initialize members
         current_items = new ArrayList<>( );
@@ -129,7 +131,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             //current_items.add( item );                                                //add this new object to the current cars in the vie
             Map<String, String> task_data = new HashMap<>(2);                           //this map will hold one item to be displayed on the list
             String title = current_items.get( i ).description;                          //build the title
-            String subtitle =  current_items.get( i ).completed ? "Completed" : "Pending";   //build subtitle
+            String subtitle =  current_items.get( i ).completed ? "Picked Up" : "Needed";   //build subtitle
             task_data.put( "title", title );                                            //put these in the map
             task_data.put( "subtitle", subtitle );
             items.add( task_data );                                                     //add map to the item (map) list
@@ -242,13 +244,6 @@ public class ShoppingListActivity extends AppCompatActivity {
             update_storage( );                                        //update internal storage
         }
         else if( view == this.findViewById( R.id.add_button2 ) ) {   //if add is pressed
-            /*Intent intent = new Intent( this, AddTask.class );      //create intent object
-            intent.putExtra( "size", current_tasks.size( ) );       //send size of array list with intent
-            for( int i = 0; i < current_tasks.size( ); ++i ) {      //loop through array list and but objects in intent
-                String key = "task_" + Integer.toString( i );       //create key
-                intent.putExtra( key, current_tasks.get( i ) );     //add object to intent
-            }
-            startActivityForResult( intent, 1 );                    //start Add task activity for result with id "1"*/
             show_add_pop_up( );                                     //show the add pop-up
             item_list.refreshDrawableState( );                      //redraw list
         }
@@ -294,11 +289,13 @@ public class ShoppingListActivity extends AppCompatActivity {
     }
 
     //overriding method that gets called
-    //when the home button is pressed
+    //when the back button is pressed
     @Override
     public void onBackPressed( ) {
         super.onBackPressed( );
         update_storage( );
+        Intent intent = new Intent( this, MainActivity.class );
+        startActivity( intent );
         finish( );
     }
 }

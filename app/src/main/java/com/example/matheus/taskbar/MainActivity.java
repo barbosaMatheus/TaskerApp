@@ -15,13 +15,19 @@ public class MainActivity extends AppCompatActivity {
             "To set an alarm go to the alarm screen by clicking \"ALARM\" on the main " +
             "screen. Once on the alarm screen, choose a time using the time picker and make " +
             "sure the \"SET\" button is toggled on. Toggle the button off to deactivate the" +
-            " alarm.\n\nTo manage your tasks go to the tasks screen by clicking \"TASKS\" " +
-            "on the main screen. Once on the tasks screen you can add entries by clicking " +
+            " alarm. When the alarm sounds, click on the notification to open the app or " +
+            "open the app normally and click the alarm toggle to switch off the ringtone." +
+            "\n\nTo manage your tasks go to the tasks screen by clicking \"TASKS\"" +
+            " on the main screen. Once on the tasks screen you can add entries by clicking " +
             "\"ADD\" or clear all entries by holding down \"CLEAR ALL\". To clear only " +
             "certain entries, click to highlight each entry and click \"CLEAR\" to clear " +
             "the highlighted entries. You may also edit entries after adding them by " +
             "holding down (long-click) on the entry and a pop-up window will appear on-" +
-            "screen.\n\nFor questions/issues please e-mail Matheus (asaph@okstate.edu).";
+            "screen.\n\nTo use the shopping list feature, simply click \"SHOPPING LIST\"" +
+            " and this list operates just like the tasks list but it allows for separation" +
+            " of shopping items from general tasks that need to be accomplished. More features" +
+            " will be added exclusively for the shopping list in the future.\n\nFor questions/" +
+            "issues please e-mail Matheus (asaph@okstate.edu).";
 
     public String app_name_str = "Tasker";
 
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar( ).setTitle( "Main" );
 
         Button shopping = ( Button ) this.findViewById( R.id.slist_button );
         shopping.setOnClickListener( new Button.OnClickListener( ) {

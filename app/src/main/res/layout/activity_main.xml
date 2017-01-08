@@ -12,56 +12,60 @@
     tools:context="com.example.matheus.taskbar.MainActivity"
     android:background="@drawable/background">
 
+    <Button
+        android:text="help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/help_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:onClick="button_click_listener"
+        android:textSize="18sp"/>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/title"
-        android:layout_marginTop="41dp"
-        android:id="@+id/imageView"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentStart="true"
+        android:id="@+id/imageView2"
+        android:layout_above="@+id/help_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="153dp"
+        android:layout_marginBottom="364dp" />
 
     <Button
-        android:text="Tasks"
+        android:text="shopping list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tasks_button"
+        android:id="@+id/slist_button"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/tasks_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="29dp"
         android:onClick="button_click_listener"
-        android:background="@android:drawable/btn_default"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp" />
+        android:textSize="18sp"/>
 
     <Button
         android:text="alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/slist_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
         android:id="@+id/alarm_button"
-        android:background="@android:drawable/btn_default"
-        android:onClick="button_click_listener" />
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/slist_button"
+        android:layout_alignEnd="@+id/slist_button"
+        android:onClick="button_click_listener"
+        android:textSize="18sp"/>
 
     <Button
-        android:text="Help"
+        android:text="tasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/help_button"
+        android:layout_marginTop="102dp"
+        android:id="@+id/tasks_button"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/slist_button"
         android:onClick="button_click_listener"
-        android:background="@android:drawable/btn_default"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/alarm_button"
-        android:layout_alignStart="@+id/tasks_button" />
+        android:textSize="18sp"/>
 
-    <Button
-        android:text="Shopping List"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:id="@+id/slist_button"
-        android:background="@android:drawable/btn_default"
-        android:onClick="button_click_listener"
-        android:layout_below="@+id/tasks_button"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

@@ -17,16 +17,15 @@ public class AlarmService extends IntentService {
 
     @Override
     public void onHandleIntent( Intent intent ) {
-        sendNotification( "Hello, your alarm is sounding." );
+        sendNotification( "Alarm sounding. Click here to go to app and disable." );
     }
 
     private void sendNotification( String msg ) {
         alarmNotificationManager = ( NotificationManager ) this
                 .getSystemService( Context.NOTIFICATION_SERVICE );
 
-        PendingIntent contentIntent = PendingIntent.getActivity( this, 0,
-                new Intent( this, Alarm.class ), 0 );
-
+        Intent intent = new Intent( this, Alarm.class );
+        PendingIntent contentIntent = PendingIntent.getActivity( this, 0, intent, 0 );
         NotificationCompat.Builder alarmNotificationBuilder = new NotificationCompat.Builder(
                 this ).setContentTitle( "Alarm" ).setSmallIcon( R.drawable.logo )
                 .setStyle( new NotificationCompat.BigTextStyle( ).bigText( msg ) )

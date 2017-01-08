@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -13,29 +14,29 @@ import android.widget.Toast;
 
 public class AlarmReceiver extends WakefulBroadcastReceiver {
 
+    Ringtone ringtone;
+
+
     @Override
     public void onReceive( final Context context, Intent intent ) {
         //this will update the UI with message
         //Alarm inst = Alarm.instance( );
 
         //this will sound the alarm once
-        Uri alarmUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_ALARM );
-        /*if ( alarmUri == null ) {
+        /*Uri alarmUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_ALARM );
+        if ( alarmUri == null ) {
             alarmUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_NOTIFICATION );
-        }*/
-        Ringtone ringtone = RingtoneManager.getRingtone( context, alarmUri );
-        ringtone.play( );
-        Intent intent2 = new Intent( context, Alarm.class );
-        intent.putExtra( "ring", true );
-        context.startActivity( intent2 );
-        /*final long start = System.currentTimeMillis( );
-        while( ( System.currentTimeMillis( ) - start ) < 10000 );
-        ringtone.stop( );*/
+        }
+        ringtone = RingtoneManager.getRingtone( context, alarmUri );
+        ringtone.setStreamType( AudioManager.STREAM_ALARM );
+        ringtone.play( );*/
+        Intent ringing  = new Intent( context, RingtonePlayingService.class );
+        context.startService( ringing );
 
         //this will send a notification message
-        /*ComponentName comp = new ComponentName( context.getPackageName( ),
+        ComponentName comp = new ComponentName( context.getPackageName( ),
                 AlarmService.class.getName( ) );
         startWakefulService( context, ( intent.setComponent( comp ) ) );
-        setResultCode( Activity.RESULT_OK );*/
+        setResultCode( Activity.RESULT_OK );
     }
 }

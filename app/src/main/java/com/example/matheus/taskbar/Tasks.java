@@ -32,7 +32,7 @@ public class Tasks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
-
+        getSupportActionBar( ).setTitle( "Tasks" );
         //initialize members
         current_tasks = new ArrayList<>( );
         tasks = new ArrayList<>( );
@@ -222,7 +222,7 @@ public class Tasks extends AppCompatActivity {
     //for all the buttons on this view
     public void button_click_listener( View view ) {
         if( view == this.findViewById( R.id.ca_button ) ) { //if clear all is pressed
-            if( current_tasks.isEmpty( ) );                     //does nothing for an empty list
+            if( current_tasks.isEmpty( ) ) return;                    //does nothing for an empty list
             Toast.makeText( getApplicationContext( ), "hold down to clear all", Toast.LENGTH_SHORT ).show( );
         }
         else if( view == this.findViewById( R.id.clear_button ) ) {   //if clear is pressed
@@ -237,13 +237,6 @@ public class Tasks extends AppCompatActivity {
             update_storage( );                                        //update internal storage
         }
         else if( view == this.findViewById( R.id.add_button ) ) {   //if add is pressed
-            /*Intent intent = new Intent( this, AddTask.class );      //create intent object
-            intent.putExtra( "size", current_tasks.size( ) );       //send size of array list with intent
-            for( int i = 0; i < current_tasks.size( ); ++i ) {      //loop through array list and but objects in intent
-                String key = "task_" + Integer.toString( i );       //create key
-                intent.putExtra( key, current_tasks.get( i ) );     //add object to intent
-            }
-            startActivityForResult( intent, 1 );                    //start Add task activity for result with id "1"*/
             show_add_pop_up( );                                     //show the add pop-up
             task_list.refreshDrawableState( );                      //redraw list
         }
@@ -319,11 +312,13 @@ public class Tasks extends AppCompatActivity {
     }
 
     //overriding method that gets called
-    //when the home button is pressed
+    //when the back button is pressed
     @Override
     public void onBackPressed( ) {
         super.onBackPressed( );
         update_storage( );
+        Intent intent = new Intent( this, MainActivity.class );
+        startActivity( intent );
         finish( );
     }
 }

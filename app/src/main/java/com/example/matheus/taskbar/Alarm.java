@@ -1,14 +1,20 @@
 package com.example.matheus.taskbar;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -23,11 +29,13 @@ public class Alarm extends AppCompatActivity {
     public TimePicker time_picker;
     public ToggleButton toggle;
     public int alarm_set;
+    private final int OFFSET = 18000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
+        getSupportActionBar( ).setTitle( "Alarm/Reminder" );
 
         time_picker = ( TimePicker ) findViewById( R.id.alarm_time );
         alarm_manager = ( AlarmManager ) getSystemService( ALARM_SERVICE );
@@ -35,20 +43,7 @@ public class Alarm extends AppCompatActivity {
         if( alarm_is_set( ) ) toggle.setChecked( true );
         else toggle.setChecked( false );
 
-        //TODO: fix so we don't have to see this message
-
-        //trying something
-        if( getIntent( ).getBooleanExtra( "ring", false ) ) {
-            AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
-            pop_up.setTitle( "Alarm" );
-            pop_up.setIcon( R.drawable.logo );
-            pop_up.setMessage( "Your alarm has gone off, click below to disable it" );
-
-            //set up buttons for dialog box
-            pop_up.setPositiveButton( "OK", null );
-        }
-
-        //create and set up dialog box object
+        /*//create and set up dialog box object
         AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
         pop_up.setTitle( "Information" );
         pop_up.setIcon( R.drawable.logo );
@@ -63,7 +58,7 @@ public class Alarm extends AppCompatActivity {
         pop_up.setPositiveButton( "OK", null );
 
         //show pop-up
-        pop_up.show( );
+        pop_up.show( );*/
     }
 
     public void on_toggle( View view ) {
@@ -73,18 +68,19 @@ public class Alarm extends AppCompatActivity {
             calendar.set( Calendar.MINUTE, time_picker.getMinute( ) );
             Intent intent = new Intent( Alarm.this, AlarmReceiver.class );
             pending_intent = PendingIntent.getBroadcast( Alarm.this, 0, intent, 0 );
-            alarm_manager.setExact( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis( )-25000, pending_intent );
+            alarm_manager.setExact( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis( )-OFFSET, pending_intent );
             alarm_set = 1;
             Toast.makeText( getApplicationContext( ), "alarm is set", Toast.LENGTH_SHORT ).show( );
-            update_storage( );
         } else {
+            Intent ringing = new Intent( getApplicationContext( ), RingtonePlayingService.class );
+            stopService( ringing );
             Intent intent = new Intent( Alarm.this, AlarmReceiver.class );
             pending_intent = PendingIntent.getBroadcast( Alarm.this, 0, intent, 0 );
             alarm_manager.cancel( pending_intent );
             alarm_set = 0;
             Toast.makeText( getApplicationContext( ), "alarm disabled", Toast.LENGTH_SHORT ).show( );
-            update_storage( );
         }
+        update_storage( );
     }
 
     public boolean alarm_is_set( ) {
@@ -96,13 +92,23 @@ public class Alarm extends AppCompatActivity {
             editor.apply( );
             return false;
         }
-        return alarm_set == 1 ? true : false;
+        return alarm_set == 1;
     }
 
     public void update_storage( ) {
-        SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
-        SharedPreferences.Editor editor = sp_file.edit( );                      //make editor object
-        editor.putInt( "alarm_set", alarm_set );
-        editor.apply( );
+        SharedPreferences sp_file = getPreferences(Context.MODE_PRIVATE);     //make shared preferences object
+        SharedPreferences.Editor editor = sp_file.edit();                      //make editor object
+        editor.putInt("alarm_set", alarm_set);
+        editor.apply();
+    }
+
+    //overriding method that gets called
+    //when the back button is pressed
+    @Override
+    public void onBackPressed( ) {
+        super.onBackPressed( );
+        Intent intent = new Intent( this, MainActivity.class );
+        startActivity( intent );
+        finish( );
     }
 }

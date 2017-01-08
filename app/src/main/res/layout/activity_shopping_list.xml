@@ -11,41 +11,38 @@
     tools:context="com.example.matheus.taskbar.ShoppingListActivity">
 
     <Button
-        android:text="Clear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/clear_button2"
-        android:onClick="button_click_listener2"
-        android:background="@android:drawable/btn_default" />
-
-    <Button
-        android:text="Clear All"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/ca_button2"
-        android:onClick="button_click_listener2"
-        android:background="@android:drawable/btn_default"
-        android:longClickable="true" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/list2"
-        android:layout_below="@+id/clear_button2"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="11dp" />
-
-    <Button
-        android:text="add"
+        android:text="add item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:id="@+id/add_button2"
-        android:background="@android:drawable/btn_default"
         android:onClick="button_click_listener2" />
+
+    <Button
+        android:text="clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/clear_button2"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/ca_button2"
+        android:onClick="button_click_listener2" />
+
+    <Button
+        android:text="clr all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ca_button2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="button_click_listener2" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/add_button2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:id="@+id/list2" />
 </RelativeLayout>

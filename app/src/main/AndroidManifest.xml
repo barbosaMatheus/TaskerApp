@@ -20,26 +20,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AddTask"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".Tasks"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".Alarm"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
+
         <service
             android:name=".AlarmService"
             android:enabled="true" />
 
+        <service
+            android:name=".RingtonePlayingService"
+            android:enabled="true" />
+
         <receiver android:name=".AlarmReceiver" />
 
-        <activity android:name=".ShoppingListActivity"></activity>
+        <activity android:name=".ShoppingListActivity" />
     </application>
 
 </manifest>
