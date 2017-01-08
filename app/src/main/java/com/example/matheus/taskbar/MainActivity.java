@@ -12,6 +12,8 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     public final String help_message = "Welcome, and thank you for downloading Tasker!\n\n" +
+            "\n\nIMPORTANT: please read the help on each page at least once. " +
+            "Some buttons have multiple functions which are explained in the help text." +
             "To set an alarm go to the alarm screen by clicking \"ALARM\" on the main " +
             "screen.\n\nTo manage your tasks go to the tasks screen by clicking \"TASKS\"" +
             " on the main screen.\n\nTo use the shopping list feature, simply click " +

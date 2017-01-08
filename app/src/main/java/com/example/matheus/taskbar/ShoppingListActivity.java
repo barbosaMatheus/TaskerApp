@@ -66,13 +66,11 @@ public class ShoppingListActivity extends AppCompatActivity {
                 if( !( current_items.get( i ).selected ) ) { //if being highlighted
                     view.setBackgroundResource( R.color.selected_row );
                     current_items.get( i ).selected = true;
-                    current_items.get( i ).completed = true;
                     highlighted_total += current_items.get( i ).price;
                 }
                 else { //if being lowlighted
                     view.setBackgroundResource( android.R.color.transparent );
                     current_items.get( i ).selected = false;
-                    current_items.get( i ).completed = false;
                     highlighted_total -= current_items.get( i ).price;
                 }
 
@@ -142,8 +140,12 @@ public class ShoppingListActivity extends AppCompatActivity {
             final String data = sp_file.getString( key, "" );
             final String text = extract_text( data );
             final double price = extract_price( data );
-            current_items.add( new Item( text, price ) );      //add data to array list
+            current_items.add( new Item( text, price, extract_selected( data ) ) );      //add data to array list
         }
+    }
+
+    public boolean extract_selected( String data ) {
+        return ( data.charAt( data.length( )-1 ) == '1' );
     }
 
     public String extract_text( String data ) {
@@ -162,7 +164,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         while( ( i < data.length( ) ) && ( data.charAt( i ) != '\\' ) )  i += 1;
         i += 1;
         StringBuilder builder = new StringBuilder( );
-        while( i < data.length( ) ) {
+        while( data.charAt( i ) != '\\' ) {
             builder.append( data.charAt( i ) );
             i += 1;
         }
@@ -183,7 +185,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             Map<String, String> task_data = new HashMap<>(2);                           //this map will hold one item to be displayed on the list
             String title = current_items.get( i ).description + "\t\t($"
                     + Double.toString( current_items.get( i ).price ) + ")";            //build the title
-            String subtitle =  current_items.get( i ).completed ? "Picked Up" : "Needed";   //build subtitle
+            String subtitle =  current_items.get( i ).selected ? "Picked Up" : "Needed";   //build subtitle
             task_data.put( "title", title );                                            //put these in the map
             task_data.put( "subtitle", subtitle );
             items.add( task_data );                                                     //add map to the item (map) list
@@ -291,7 +293,8 @@ public class ShoppingListActivity extends AppCompatActivity {
         for( int i = 0; i < current_items.size( ); ++i ) {                      //loop through array list
             String key = "item_" + Integer.toString( i );                       //create key
             final String value = current_items.get( i ).description +
-                    "\\" + Double.toString( current_items.get( i ).price );
+                    "\\" + Double.toString( current_items.get( i ).price )
+                    + ( current_items.get( i ).selected ? "\\1" : "\\0" );
             editor.putString( key, value );                                     //write to storage
             editor.apply( );
         }
@@ -306,7 +309,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         }
         else if( view == this.findViewById( R.id.clear_button2 ) ) {  //if clear is pressed
             for( int i = 0; i < current_items.size( ); ++i ) {        //remove the selected task objects
-                if( current_items.get( i ).completed ) {
+                if( current_items.get( i ).selected ) {
                     current_items.remove( i );
                     --i;                                              //move i back one to compensate for removal of item
                 }
@@ -364,7 +367,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                     item_price = Double.valueOf( price_as_string );
                 }
 
-                current_items.add( new Item( text, item_price ) );
+                current_items.add( new Item( text, item_price, false ) );
                 item_list.setAdapter( get_list_adapter( ) );     //get a new adapter
                 update_storage( );                               //update internal storage
             }

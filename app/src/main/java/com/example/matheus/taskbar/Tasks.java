@@ -57,12 +57,10 @@ public class Tasks extends AppCompatActivity {
                 if( !( current_tasks.get( i ).selected ) ) {
                     view.setBackgroundResource( R.color.selected_row );
                     current_tasks.get( i ).selected = true;
-                    current_tasks.get( i ).completed = true;
                 }
                 else {
                     view.setBackgroundResource( android.R.color.transparent );
                     current_tasks.get( i ).selected = false;
-                    current_tasks.get( i ).completed = false;
                 }
 
                 task_list.setAdapter( get_list_adapter( ) );
@@ -120,7 +118,7 @@ public class Tasks extends AppCompatActivity {
                     return; //leave so we don't take any info
                 }
 
-                current_tasks.add( new Task( text ) );
+                current_tasks.add( new Task( text, false ) );
                 task_list.setAdapter( get_list_adapter( ) );     //get a new adapter
                 update_storage( );                               //update internal storage
             }
@@ -189,7 +187,7 @@ public class Tasks extends AppCompatActivity {
             //current_tasks.add( task );                                                //add this new object to the current cars in the vie
             Map<String, String> task_data = new HashMap<>(2);                           //this map will hold one item to be displayed on the list
             String title = current_tasks.get( i ).description;                          //build the title
-            String subtitle =  current_tasks.get( i ).completed ? "Completed" : "Pending";   //build subtitle
+            String subtitle =  current_tasks.get( i ).selected ? "Completed" : "Pending";   //build subtitle
             task_data.put( "title", title );                                            //put these in the map
             task_data.put( "subtitle", subtitle );
             tasks.add( task_data );                                                     //add map to the item (map) list
@@ -227,7 +225,7 @@ public class Tasks extends AppCompatActivity {
         }
         else if( view == this.findViewById( R.id.clear_button ) ) {   //if clear is pressed
             for( int i = 0; i < current_tasks.size( ); ++i ) {        //remove the selected task objects
-                if( current_tasks.get( i ).completed ) {
+                if( current_tasks.get( i ).selected ) {
                     current_tasks.remove( i );
                     --i;                                              //move i back one to compensate for removal of item
                 }
@@ -284,8 +282,30 @@ public class Tasks extends AppCompatActivity {
         current_tasks.clear( );                                                 //clear array list
         for( int i = 0; i < size; ++i ) {                                       //loop through the file
             String key = "task_" + Integer.toString( i );                       //create key
-            current_tasks.add( new Task( sp_file.getString( key, "" ) ) );      //add data to array list
+            final String data = sp_file.getString( key, "" );
+            final String text = extract_text( data );
+            current_tasks.add( new Task( text, extract_selected( data ) ) );      //add data to array list
         }
+    }
+
+    //extracts the selected boolean from
+    //a Task object metadata in the form
+    //of a string
+    public boolean extract_selected( String data ) {
+        return ( data.charAt( data.length( )-1 ) == '1' );
+    }
+
+    //extracts the description String from
+    //a Task object metadata in the form
+    //of a string
+    public String extract_text( String data ) {
+        StringBuilder builder = new StringBuilder( );
+
+        for( int i = 0; i < data.length( ); ++i ) {
+            if( data.charAt( i ) == '\\' ) return builder.toString( );
+            builder.append( data.charAt( i ) );
+        }
+        return builder.toString( );
     }
 
     //updates the persistent data based
@@ -306,7 +326,9 @@ public class Tasks extends AppCompatActivity {
 
         for( int i = 0; i < current_tasks.size( ); ++i ) {                      //loop through array list
             String key = "task_" + Integer.toString( i );                       //create key
-            editor.putString( key, current_tasks.get( i ).description );        //write to storage
+            final String value = current_tasks.get( i ).description +
+                    "\\" + ( current_tasks.get( i ).selected ? "1" : "0" );
+            editor.putString( key, value );        //write to storage
             editor.apply( );
         }
     }
