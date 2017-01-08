@@ -103,14 +103,14 @@ public class Tasks extends AppCompatActivity {
         AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
         pop_up.setTitle( "Add Entry" );
         pop_up.setIcon( R.drawable.logo );
-        pop_up.setMessage( "Enter your text below and press \'OK\'" );
+        pop_up.setMessage( "Enter your text below and press \"ADD\"" );
 
         //create edit text object
         final EditText input = new EditText( this );
         pop_up.setView( input );
 
         //set up buttons for dialog box
-        pop_up.setPositiveButton( "OK", new DialogInterface.OnClickListener( ) {
+        pop_up.setPositiveButton( "ADD", new DialogInterface.OnClickListener( ) {
             @Override
             public void onClick( DialogInterface dialog, int which ) {
                 final String text = input.getText( ).toString( );
@@ -142,7 +142,7 @@ public class Tasks extends AppCompatActivity {
         AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
         pop_up.setTitle( "Edit Entry" );
         pop_up.setIcon( R.drawable.logo );
-        pop_up.setMessage( "Edit your entry below and press \'OK\'" );
+        pop_up.setMessage( "Edit your entry below and press \"SAVE\"" );
 
         //create edit text object and fill with
         //current task contents to be in dialog box
@@ -152,7 +152,7 @@ public class Tasks extends AppCompatActivity {
         pop_up.setView( input );
 
         //set up buttons for dialog box
-        pop_up.setPositiveButton( "OK", new DialogInterface.OnClickListener( ) {
+        pop_up.setPositiveButton( "SAVE", new DialogInterface.OnClickListener( ) {
             @Override
             public void onClick( DialogInterface dialog, int which ) {
                 final String text = input.getText( ).toString( );
@@ -167,7 +167,7 @@ public class Tasks extends AppCompatActivity {
                 update_storage( );                               //update internal storage
             }
         } );
-        pop_up.setNegativeButton( "Cancel", null );
+        pop_up.setNegativeButton( "CANCEL", null );
         final AlertDialog alert = pop_up.create( );
         //forces keyboard to come up
         alert.getWindow( ).setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE );
@@ -320,5 +320,30 @@ public class Tasks extends AppCompatActivity {
         Intent intent = new Intent( this, MainActivity.class );
         startActivity( intent );
         finish( );
+    }
+
+    //shows a pop-up with some help information
+    public void show_help_pop( View view ) {
+        //create and set up dialog box object
+        AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
+        pop_up.setTitle( "Tasks Help" );
+        pop_up.setIcon( R.drawable.logo );
+        final String help_message = "This section can be used for your tasks, things " +
+                "that you need to do at some point. You can add a new task by clicking" +
+                " \"ADD TASK\", which will trigger a dialog box asking for you to enter" +
+                " text for the new task. This text can be anything (including emojis) " +
+                "and may contains dates, or anything else that you please. When a task" +
+                " is completed, it can be highlighted by a single click, and clicking " +
+                "\"CLEAR\" will remove all the highlighted tasks. All tasks can be " +
+                "cleared at once by holding down \"CLR ALL\". To edit the text of any" +
+                " task, just hold down on that entry and a dialog box will pop up with" +
+                " editable text. Click \"SAVE\" to save changes, or \"CANCEL\" to abort.";
+        pop_up.setMessage( help_message );
+
+        //set up buttons for dialog box
+        pop_up.setPositiveButton( "OK", null );
+
+        //show pop-up
+        pop_up.show( );
     }
 }

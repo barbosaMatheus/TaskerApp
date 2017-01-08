@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
@@ -70,7 +71,7 @@ public class Alarm extends AppCompatActivity {
             pending_intent = PendingIntent.getBroadcast( Alarm.this, 0, intent, 0 );
             alarm_manager.setExact( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis( )-OFFSET, pending_intent );
             alarm_set = 1;
-            Toast.makeText( getApplicationContext( ), "alarm is set", Toast.LENGTH_SHORT ).show( );
+            //Toast.makeText( getApplicationContext( ), "alarm is set", Toast.LENGTH_SHORT ).show( );
         } else {
             Intent ringing = new Intent( getApplicationContext( ), RingtonePlayingService.class );
             stopService( ringing );
@@ -78,7 +79,7 @@ public class Alarm extends AppCompatActivity {
             pending_intent = PendingIntent.getBroadcast( Alarm.this, 0, intent, 0 );
             alarm_manager.cancel( pending_intent );
             alarm_set = 0;
-            Toast.makeText( getApplicationContext( ), "alarm disabled", Toast.LENGTH_SHORT ).show( );
+            //Toast.makeText( getApplicationContext( ), "alarm disabled", Toast.LENGTH_SHORT ).show( );
         }
         update_storage( );
     }
@@ -110,5 +111,29 @@ public class Alarm extends AppCompatActivity {
         Intent intent = new Intent( this, MainActivity.class );
         startActivity( intent );
         finish( );
+    }
+
+    //shows a pop-up with some help information
+    public void show_help_pop( View view ) {
+        //create and set up dialog box object
+        AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
+        pop_up.setTitle( "Alarm Help" );
+        pop_up.setIcon( R.drawable.logo );
+        final String help_message = "This alarm is mainly designed for daily reminders, such as" +
+                " meetings and timed activities, but it is also fully suited to be used as a wake" +
+                "-up alarm in the morning. The interface provides simplicity.\n\nTo set the alarm" +
+                ", pick the hour and minute using the hands of the clock (make sure to pick AM/PM" +
+                " correctly) and set it by clicking the toggle button in the center. The button" +
+                " text will now read \"ALARM SET\". Use the same toggle button to disable the " +
+                "alarm. Once the alarm sounds, notification will appear on your screen. Click " +
+                "the notification (may have to unlock screen first) to open up the alarm screen" +
+                " and then click the toggle button to disable the alarm and turn off the sound.";
+        pop_up.setMessage( help_message );
+
+        //set up buttons for dialog box
+        pop_up.setPositiveButton( "OK", null );
+
+        //show pop-up
+        pop_up.show( );
     }
 }

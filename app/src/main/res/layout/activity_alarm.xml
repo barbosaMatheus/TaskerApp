@@ -28,4 +28,15 @@
         android:layout_below="@+id/alarm_time"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:text="\?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/alarm_help"
+        android:layout_toEndOf="@+id/alarm_toggle"
+        android:layout_marginStart="79dp"
+        android:onClick="show_help_pop" />
+
 </RelativeLayout>
