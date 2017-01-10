@@ -117,15 +117,15 @@ public class Alarm extends AppCompatActivity {
     public void show_help_pop( View view ) {
         //create and set up dialog box object
         AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
-        pop_up.setTitle( "Alarm Help" );
+        pop_up.setTitle( "Alarm/Reminder Help" );
         pop_up.setIcon( R.drawable.logo );
         final String help_message = "This alarm is mainly designed for daily reminders, such as" +
-                " meetings and timed activities, but it is also fully suited to be used as a wake" +
-                "-up alarm in the morning. The interface provides simplicity.\n\nTo set the alarm" +
+                " meetings and timed activities, it is not particularly meant to be used as a wake" +
+                "-up alarm in the morning.\n\nThe interface provides simplicity. To set the alarm" +
                 ", pick the hour and minute using the hands of the clock (make sure to pick AM/PM" +
                 " correctly) and set it by clicking the toggle button in the center. The button" +
-                " text will now read \"ALARM SET\". Use the same toggle button to disable the " +
-                "alarm. Once the alarm sounds, notification will appear on your screen. Click " +
+                " text will now read \"ON\". Use the same toggle button to disable the " +
+                "alarm. Once the alarm sounds, a notification will appear on your screen. Click " +
                 "the notification (may have to unlock screen first) to open up the alarm screen" +
                 " and then click the toggle button to disable the alarm and turn off the sound.";
         pop_up.setMessage( help_message );

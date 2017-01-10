@@ -16,18 +16,6 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/alarm_time" />
 
-    <ToggleButton
-        android:text="ToggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/alarm_toggle"
-        android:textOff="alarm off"
-        android:textOn="alarm set"
-        android:layout_marginTop="47dp"
-        android:onClick="on_toggle"
-        android:layout_below="@+id/alarm_time"
-        android:layout_centerHorizontal="true" />
-
     <Button
         android:text="\?"
         android:layout_width="wrap_content"
@@ -38,5 +26,16 @@
         android:layout_toEndOf="@+id/alarm_toggle"
         android:layout_marginStart="79dp"
         android:onClick="show_help_pop" />
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/alarm_toggle"
+        android:textOff="off"
+        android:textOn="on"
+        android:onClick="on_toggle"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

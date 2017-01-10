@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ public class Tasks extends AppCompatActivity {
 
     public ArrayList<Task> current_tasks;           //holds task objects
     public List<Map<String, String>> tasks;         //array list to hold info for ListView
+    public SimpleAdapter adapter;                     //adapter object for the list
     ListView task_list;                             //ListView instance
     public int size;                                //number of saved tasks
 
@@ -37,6 +39,26 @@ public class Tasks extends AppCompatActivity {
         current_tasks = new ArrayList<>( );
         tasks = new ArrayList<>( );
         task_list = (ListView) this.findViewById( R.id.list );
+        adapter = new SimpleAdapter( Tasks.this, tasks, android.R.layout.simple_list_item_2,
+                new String[] { "title", "subtitle" },
+                new int[] { android.R.id.text1, android.R.id.text2 } ) {
+            @Override //override getView method so we can paint the cell before it goes out
+            public View getView( int pos, View convertView, ViewGroup parent ) {
+                View view = super.getView( pos, convertView, parent );
+                if( current_tasks.get( pos ).selected ) {                       //if this item was selected before, paint it green
+                    view.setBackgroundResource( R.color.selected_row );
+                }
+                else {                                                         //else just leave it transparent
+                    view.setBackgroundResource( android.R.color.transparent );
+                }
+                return view;                                                   //return a new list item (view)
+            }
+
+            @Override //override the getCount method so we don't crash on an empty list
+            public int getCount( ) {
+                return current_tasks.size( );
+            }
+        };
 
         //Idk what this is but cell color changing doesn't work without it
         task_list.setDescendantFocusability( ViewGroup.FOCUS_BLOCK_DESCENDANTS );
@@ -44,8 +66,43 @@ public class Tasks extends AppCompatActivity {
         //gets data from file and updates array list
         update_list( );
 
-        //set adapter for the list
-        task_list.setAdapter( get_list_adapter( ) );
+        //update the list adapter
+        update_adapter_data( );
+
+        //set the adapter
+        task_list.setAdapter( adapter );
+
+        //refresh list adapter on UI thread
+        runOnUiThread( new Runnable( ) {
+            @Override
+            public void run( ) {
+                if( adapter == null ) {
+                    adapter = new SimpleAdapter( Tasks.this, tasks, android.R.layout.simple_list_item_2,
+                            new String[] { "title", "subtitle" },
+                            new int[] { android.R.id.text1, android.R.id.text2 } ) {
+                        @Override //override getView method so we can paint the cell before it goes out
+                        public View getView( int pos, View convertView, ViewGroup parent ) {
+                            View view = super.getView( pos, convertView, parent );
+                            if( current_tasks.get( pos ).selected ) {                       //if this item was selected before, paint it green
+                                view.setBackgroundResource( R.color.selected_row );
+                            }
+                            else {                                                         //else just leave it transparent
+                                view.setBackgroundResource( android.R.color.transparent );
+                            }
+                            return view;                                                   //return a new list item (view)
+                        }
+
+                        @Override //override the getCount method so we don't crash on an empty list
+                        public int getCount( ) {
+                            return current_tasks.size( );
+                        }
+                    };
+                }
+                else {
+                    adapter.notifyDataSetChanged( );
+                }
+            }
+        } );
 
         //overrides the onItemClick method and sets it as
         //the new click listener for list items
@@ -62,9 +119,8 @@ public class Tasks extends AppCompatActivity {
                     view.setBackgroundResource( android.R.color.transparent );
                     current_tasks.get( i ).selected = false;
                 }
-
-                task_list.setAdapter( get_list_adapter( ) );
-                task_list.refreshDrawableState( );
+                update_adapter_data( );
+                adapter.notifyDataSetChanged( );
             }
         } );
 
@@ -74,7 +130,6 @@ public class Tasks extends AppCompatActivity {
             @Override
             public boolean onItemLongClick( AdapterView<?> arg0, View view, final int pos, long id ) {
                 show_edit_pop_up( pos );                         //show the pop up to edit text
-                task_list.refreshDrawableState( );               //redraw list
                 return true;                                     //return true for some reason
             }
         } );
@@ -86,7 +141,8 @@ public class Tasks extends AppCompatActivity {
             @Override
             public boolean onLongClick(View view) {
                 current_tasks.clear( );                         //clear all contents
-                task_list.setAdapter( get_list_adapter( ) );    //make new adapter
+                update_adapter_data( );                         //update adapter data
+                adapter.notifyDataSetChanged( );                //refresh table
                 update_storage( );                              //update internal storage
                 task_list.refreshDrawableState( );              //redraw list
                 return true;
@@ -119,8 +175,9 @@ public class Tasks extends AppCompatActivity {
                     return; //leave so we don't take any info
                 }
 
-                current_tasks.add( new Task( text, false ) );
-                task_list.setAdapter( get_list_adapter( ) );     //get a new adapter
+                current_tasks.add( new Task( text, false ) );    //add new Task to tasks list
+                update_adapter_data( );                          //update adapter data
+                adapter.notifyDataSetChanged( );                 //refresh list
                 update_storage( );                               //update internal storage
             }
         } );
@@ -161,8 +218,9 @@ public class Tasks extends AppCompatActivity {
                     return; //leave so we don't take any info
                 }
 
-                current_tasks.get( _pos ).description = text;
-                task_list.setAdapter( get_list_adapter( ) );     //get a new adapter
+                current_tasks.get( _pos ).description = text;    //update object list
+                update_adapter_data( );                          //update adapter data
+                adapter.notifyDataSetChanged( );                 //refresh list
                 update_storage( );                               //update internal storage
             }
         } );
@@ -177,7 +235,7 @@ public class Tasks extends AppCompatActivity {
     }
 
     //returns an adapter object based on modified task data
-    public SimpleAdapter get_list_adapter( ) {
+    public void update_adapter_data( ) {
         //clear the List first
         tasks.clear( );
         size = current_tasks.size( );
@@ -193,28 +251,6 @@ public class Tasks extends AppCompatActivity {
             task_data.put( "subtitle", subtitle );
             tasks.add( task_data );                                                     //add map to the item (map) list
         }
-
-        //then create, set up and return new list adapter
-        return new SimpleAdapter( this, tasks, android.R.layout.simple_list_item_2,
-                new String[] { "title", "subtitle" },
-                new int[] { android.R.id.text1, android.R.id.text2 } ) {
-            @Override //override getView method so we can paint the cell before it goes out
-            public View getView( int pos, View convertView, ViewGroup parent ) {
-                View view = super.getView( pos, convertView, parent );
-                if( current_tasks.get( pos ).selected ) {                       //if this item was selected before, paint it green
-                    view.setBackgroundResource( R.color.selected_row );
-                }
-                else {                                                         //else just leave it transparent
-                    view.setBackgroundResource( android.R.color.transparent );
-                }
-                return view;                                                   //return a new list item (view)
-            }
-
-            @Override //override the getCount method so we don't crash on an empty list
-            public int getCount( ) {
-                return current_tasks.size( );
-            }
-        };
     }
 
     //this method will be set up as the click listener
@@ -231,39 +267,12 @@ public class Tasks extends AppCompatActivity {
                     --i;                                              //move i back one to compensate for removal of item
                 }
             }
-            task_list.setAdapter( get_list_adapter( ) );              //set new adapter
-            task_list.refreshDrawableState( );                        //redraw list
+            update_adapter_data( );
+            adapter.notifyDataSetChanged( );                          //refresh list
             update_storage( );                                        //update internal storage
         }
         else if( view == this.findViewById( R.id.add_button ) ) {   //if add is pressed
             show_add_pop_up( );                                     //show the add pop-up
-            task_list.refreshDrawableState( );                      //redraw list
-        }
-    }
-
-    //this method gets called when
-    //we return from a launched activity
-    @Override
-    public void onActivityResult( int requestCode, int resultCode, Intent data ) {
-        super.onActivityResult( requestCode, resultCode, data );
-
-        if( requestCode == 1 && resultCode == RESULT_OK ) {   //if we are returning from add
-            int size = data.getIntExtra( "size", 0 ); //get size of list
-            if( size > 0 ) current_tasks.clear( );            //if the list gets cleared we don't clear the data yet
-            else {
-                //Log.d( "DEBUG", "Size: " + Integer.toString( size ) );
-                return;
-            }
-
-            for( int i = 0; i < size; ++i ) {                                  //loop through and refill array list
-                String key = "task_" + Integer.toString( i );                  //create key
-                Task task = (Task) data.getSerializableExtra( key );           //pull data and cast
-                current_tasks.add( task );                                     //add task to list
-            }
-
-            task_list.setAdapter( get_list_adapter( ) );                        //set new adapter
-            task_list.refreshDrawableState( );                                  //call for redraw
-            update_storage( );                                                  //update store with new data
         }
     }
 
@@ -353,7 +362,7 @@ public class Tasks extends AppCompatActivity {
         pop_up.setIcon( R.drawable.logo );
         final String help_message = "This section can be used for your tasks, things " +
                 "that you need to do at some point. You can add a new task by clicking" +
-                " \"ADD TASK\", which will trigger a dialog box asking for you to enter" +
+                " \"ADD TASK\", which will trigger a dialog box asking you to enter" +
                 " text for the new task. This text can be anything (including emojis) " +
                 "and may contains dates, or anything else that you please. When a task" +
                 " is completed, it can be highlighted by a single click, and clicking " +

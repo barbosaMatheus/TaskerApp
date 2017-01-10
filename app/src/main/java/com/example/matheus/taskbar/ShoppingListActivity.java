@@ -32,6 +32,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     public ArrayList<Item> current_items;           //holds item objects
     public List<Map<String, String>> items;         //array list to hold info for ListView
     ListView item_list;                             //ListView instance
+    SimpleAdapter adapter;                          //list adapter object
     public int size;                                //number of items saved
     public double highlighted_total;                //total price for highlighted items
 
@@ -52,9 +53,62 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         //gets data from file and updates array list
         update_list( );
+        update_adapter_data( );
 
         //set adapter for the list
-        item_list.setAdapter( get_list_adapter( ) );
+        adapter = new SimpleAdapter( ShoppingListActivity.this, items, android.R.layout.simple_list_item_2,
+                new String[] { "title", "subtitle" },
+                new int[] { android.R.id.text1, android.R.id.text2 } ) {
+            @Override //override getView method so we can paint the cell before it goes out
+            public View getView( int pos, View convertView, ViewGroup parent ) {
+                View view = super.getView( pos, convertView, parent );
+                if( current_items.get( pos ).selected ) {                       //if this item was selected before, paint it green
+                    view.setBackgroundResource( R.color.selected_row );
+                }
+                else {                                                         //else just leave it transparent
+                    view.setBackgroundResource( android.R.color.transparent );
+                }
+                return view;                                                   //return a new list item (view)
+            }
+
+            @Override //override the getCount method so we don't crash on an empty list
+            public int getCount( ) {
+                return current_items.size( );
+            }
+        };
+        item_list.setAdapter( adapter );
+
+        //refresh list adapter on UI thread
+        runOnUiThread( new Runnable( ) {
+            @Override
+            public void run( ) {
+                if( adapter == null ) {
+                    adapter = new SimpleAdapter( ShoppingListActivity.this, items, android.R.layout.simple_list_item_2,
+                            new String[] { "title", "subtitle" },
+                            new int[] { android.R.id.text1, android.R.id.text2 } ) {
+                        @Override //override getView method so we can paint the cell before it goes out
+                        public View getView( int pos, View convertView, ViewGroup parent ) {
+                            View view = super.getView( pos, convertView, parent );
+                            if( current_items.get( pos ).selected ) {                       //if this item was selected before, paint it green
+                                view.setBackgroundResource( R.color.selected_row );
+                            }
+                            else {                                                         //else just leave it transparent
+                                view.setBackgroundResource( android.R.color.transparent );
+                            }
+                            return view;                                                   //return a new list item (view)
+                        }
+
+                        @Override //override the getCount method so we don't crash on an empty list
+                        public int getCount( ) {
+                            return current_items.size( );
+                        }
+                    };
+                }
+                else {
+                    adapter.notifyDataSetChanged( );
+                }
+            }
+        } );
 
         //overrides the onItemClick method and sets it as
         //the new click listener for list items
@@ -74,8 +128,8 @@ public class ShoppingListActivity extends AppCompatActivity {
                     highlighted_total -= current_items.get( i ).price;
                 }
 
-                item_list.setAdapter( get_list_adapter( ) );
-                item_list.refreshDrawableState( );
+                update_adapter_data( );
+                adapter.notifyDataSetChanged( );
             }
         } );
 
@@ -85,7 +139,6 @@ public class ShoppingListActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick( AdapterView<?> arg0, View view, final int pos, long id ) {
                 show_edit_pop_up( pos );                         //show the pop up to edit text
-                item_list.refreshDrawableState( );               //redraw list
                 return true;                                     //return true for some reason
             }
         } );
@@ -98,7 +151,9 @@ public class ShoppingListActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick( View view ) {
                 current_items.clear( );                         //clear all contents
-                item_list.setAdapter( get_list_adapter( ) );    //make new adapter
+                update_adapter_data( );
+                adapter.notifyDataSetChanged( );                //refresh table
+                highlighted_total = 0.0;
                 update_storage( );                              //update internal storage
                 item_list.refreshDrawableState( );              //redraw list
                 return true;
@@ -113,7 +168,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             public boolean onLongClick( View view ) {
                 if( highlighted_total > 0.0 ) {
                     Toast.makeText( getApplicationContext(),
-                            "highlighted total: " + Double.toString( highlighted_total ),
+                            "highlighted total: $" + Double.toString( highlighted_total ),
                             Toast.LENGTH_SHORT ).show( );
                 }
                 return true;
@@ -123,7 +178,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
     //gets data from "shared preferences"
     //and updates the array list
-    public void update_list( ) {
+    public void update_list( )  {
         SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
         size = sp_file.getInt( "size2", 0 );                                //get size from the file
         if( size < 1 ) {                                                        //if empty we make a new field called size
@@ -140,7 +195,9 @@ public class ShoppingListActivity extends AppCompatActivity {
             final String data = sp_file.getString( key, "" );
             final String text = extract_text( data );
             final double price = extract_price( data );
-            current_items.add( new Item( text, price, extract_selected( data ) ) );      //add data to array list
+            final boolean selected = extract_selected( data );
+            if( selected ) highlighted_total += price;
+            current_items.add( new Item( text, price, selected ) );      //add data to array list
         }
     }
 
@@ -173,7 +230,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     }
 
     //returns an adapter object based on modified task data
-    public SimpleAdapter get_list_adapter( ) {
+    public void update_adapter_data( ) {
         //clear the List first
         items.clear( );
         size = current_items.size( );
@@ -190,28 +247,6 @@ public class ShoppingListActivity extends AppCompatActivity {
             task_data.put( "subtitle", subtitle );
             items.add( task_data );                                                     //add map to the item (map) list
         }
-
-        //then create, set up and return new list adapter
-        return new SimpleAdapter( this, items, android.R.layout.simple_list_item_2,
-                new String[] { "title", "subtitle" },
-                new int[] { android.R.id.text1, android.R.id.text2 } ) {
-            @Override //override getView method so we can paint the cell before it goes out
-            public View getView( int pos, View convertView, ViewGroup parent ) {
-                View view = super.getView( pos, convertView, parent );
-                if( current_items.get( pos ).selected ) {                       //if this item was selected before, paint it green
-                    view.setBackgroundResource( R.color.selected_row );
-                }
-                else {                                                         //else just leave it transparent
-                    view.setBackgroundResource( android.R.color.transparent );
-                }
-                return view;                                                   //return a new list item (view)
-            }
-
-            @Override //override the getCount method so we don't crash on an empty list
-            public int getCount( ) {
-                return current_items.size( );
-            }
-        };
     }
 
     //shows pop up on long press so the
@@ -260,7 +295,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
                 current_items.get( _pos ).description = text;
                 current_items.get( _pos ).price = item_price;
-                item_list.setAdapter( get_list_adapter( ) );     //get a new adapter
+                update_adapter_data( );
                 update_storage( );                               //update internal storage
             }
         } );
@@ -310,17 +345,17 @@ public class ShoppingListActivity extends AppCompatActivity {
         else if( view == this.findViewById( R.id.clear_button2 ) ) {  //if clear is pressed
             for( int i = 0; i < current_items.size( ); ++i ) {        //remove the selected task objects
                 if( current_items.get( i ).selected ) {
+                    highlighted_total -= current_items.get( i ).price;
                     current_items.remove( i );
                     --i;                                              //move i back one to compensate for removal of item
                 }
             }
-            item_list.setAdapter( get_list_adapter( ) );              //set new adapter
-            item_list.refreshDrawableState( );                        //redraw list
+            update_adapter_data( );
+            adapter.notifyDataSetChanged( );
             update_storage( );                                        //update internal storage
         }
         else if( view == this.findViewById( R.id.add_button2 ) ) {   //if add is pressed
             show_add_pop_up( );                                     //show the add pop-up
-            item_list.refreshDrawableState( );                      //redraw list
         }
     }
 
@@ -368,7 +403,8 @@ public class ShoppingListActivity extends AppCompatActivity {
                 }
 
                 current_items.add( new Item( text, item_price, false ) );
-                item_list.setAdapter( get_list_adapter( ) );     //get a new adapter
+                update_adapter_data( );
+                adapter.notifyDataSetChanged( );
                 update_storage( );                               //update internal storage
             }
         } );

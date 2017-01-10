@@ -35,7 +35,7 @@
         android:layout_marginBottom="364dp" />
 
     <Button
-        android:text="shopping list"
+        android:text="shopping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/slist_button"
@@ -47,7 +47,7 @@
         android:textSize="18sp"/>
 
     <Button
-        android:text="alarm"
+        android:text="reminder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/alarm_button"
