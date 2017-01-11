@@ -112,9 +112,7 @@ public class Alarm extends AppCompatActivity {
     @Override
     public void onBackPressed( ) {
         super.onBackPressed( );
-        Intent intent = new Intent( this, MainActivity.class );
-        startActivity( intent );
-        finishAffinity( );
+        update_storage( );
     }
 
     //shows a pop-up with some help information

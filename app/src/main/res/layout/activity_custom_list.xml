@@ -17,7 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:id="@+id/add_button3"
-        android:onClick="show_add_pop_up" />
+        android:onClick="show_add_pop_up"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:text="clr all"
@@ -26,7 +27,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/ca_button3"
-        android:onClick="custom_button_click_listener" />
+        android:onClick="custom_button_click_listener"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:text="clear"
@@ -35,7 +37,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/clear_button3"
-        android:onClick="custom_button_click_listener" />
+        android:onClick="custom_button_click_listener"
+        android:textColor="@android:color/white"/>
 
     <ListView
         android:layout_width="match_parent"

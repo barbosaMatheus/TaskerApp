@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final String help_message = "Welcome, and thank you for downloading Tasker!\n\n" +
+    public final String help_message = "Welcome, and thank you for downloading Tasker!" +
             "\n\nIMPORTANT: please read the help text on each page at least once. " +
             "Some buttons have multiple functions which are explained in the help text." +
             "To set an alarm go to the Alarm/Reminder screen by clicking \"REMINDER\" on the main " +

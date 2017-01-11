@@ -17,7 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:id="@+id/add_button"
-        android:onClick="button_click_listener" />
+        android:onClick="button_click_listener"
+        android:textColor="@android:color/white"/>
 
     <ListView
         android:layout_width="match_parent"
@@ -35,7 +36,8 @@
         android:onClick="button_click_listener"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/add_button"
-        android:layout_marginStart="7dp" />
+        android:layout_marginStart="7dp"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:text="clr all"
@@ -45,7 +47,8 @@
         android:onClick="button_click_listener"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/clear_button"
-        android:layout_marginStart="7dp" />
+        android:layout_marginStart="7dp"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:text="\?"
@@ -56,6 +59,7 @@
         android:id="@+id/task_help"
         android:layout_toEndOf="@+id/ca_button"
         android:layout_marginStart="7dp"
-        android:onClick="show_help_pop" />
+        android:onClick="show_help_pop"
+        android:textColor="@android:color/white"/>
 </RelativeLayout>
 

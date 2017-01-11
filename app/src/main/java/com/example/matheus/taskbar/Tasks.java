@@ -360,9 +360,6 @@ public class Tasks extends AppCompatActivity {
     public void onBackPressed( ) {
         super.onBackPressed( );
         update_storage( );
-        Intent intent = new Intent( this, MainActivity.class );
-        startActivity( intent );
-        finishAffinity( );
     }
 
     //shows a pop-up with some help information

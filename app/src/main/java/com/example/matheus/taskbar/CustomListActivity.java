@@ -361,7 +361,7 @@ public class CustomListActivity extends AppCompatActivity {
 
     @Override
     public void onStop( ) {
-        super.onDestroy( );
+        super.onStop( );
         update_storage( );
     }
 
@@ -369,8 +369,5 @@ public class CustomListActivity extends AppCompatActivity {
     public void onBackPressed( ) {
         super.onBackPressed( );
         update_storage( );
-        Intent intent = new Intent( this, MainActivity.class );
-        startActivity( intent );
-        finishAffinity( );
     }
 }
