@@ -155,7 +155,6 @@ public class ShoppingListActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged( );                //refresh table
                 highlighted_total = 0.0;
                 update_storage( );                              //update internal storage
-                item_list.refreshDrawableState( );              //redraw list
                 return true;
             }
         } );
@@ -235,7 +234,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         items.clear( );
         size = current_items.size( );
         //repopulate the list
-        for( int i = 0; i < current_items.size( ); ++i ) {
+        for( int i = 0; i < size; ++i ) {
             //String key = "item_" + Integer.toString( i+1 );                           //the key for the ith object is 'item_i'
             //Item item = (Task)getIntent( ).getSerializableExtra( key );               //save the serialized task object
             //current_items.add( item );                                                //add this new object to the current cars in the vie
@@ -281,13 +280,15 @@ public class ShoppingListActivity extends AppCompatActivity {
                 final String price_as_text = price.getText( ).toString( );
                 Double item_price = current_items.get( _pos ).price;
                 if( text.isEmpty( ) ) { //check for no text
-                    text = current_items.get( _pos ).description;
+                    //text = current_items.get( _pos ).description;
+                    return;
                 }
                 if( text.contains( "\\" ) ) {
-                    text = current_items.get( _pos ).description;
+                    //text = current_items.get( _pos ).description;
                     Toast.makeText( getApplicationContext( ),
                             "cannot use backslash in name",
                             Toast.LENGTH_SHORT ).show( );
+                    return;
                 }
                 if( !price_as_text.isEmpty( ) ) {
                     item_price = Double.valueOf( price_as_text );
@@ -426,7 +427,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         update_storage( );
         Intent intent = new Intent( this, MainActivity.class );
         startActivity( intent );
-        finish( );
+        finishAffinity( );
     }
 
     //shows a pop-up with some help information
@@ -454,5 +455,11 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         //show pop-up
         pop_up.show( );
+    }
+
+    @Override
+    public void onStop( ) {
+        super.onStop( );
+        update_storage( );
     }
 }

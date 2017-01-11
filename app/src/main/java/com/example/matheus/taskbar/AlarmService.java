@@ -17,7 +17,9 @@ public class AlarmService extends IntentService {
 
     @Override
     public void onHandleIntent( Intent intent ) {
-        sendNotification( "Alarm sounding. Click here to go to app and disable." );
+        final String intent_message = intent.getStringExtra( "msg" );
+        final String message = intent_message.isEmpty( ) ? "Reminder alarm. Click here to go to app and disable." : intent_message;
+        sendNotification( message );
     }
 
     private void sendNotification( String msg ) {

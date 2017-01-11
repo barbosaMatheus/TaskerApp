@@ -39,6 +39,17 @@ public class Tasks extends AppCompatActivity {
         current_tasks = new ArrayList<>( );
         tasks = new ArrayList<>( );
         task_list = (ListView) this.findViewById( R.id.list );
+
+        //Idk what this is but cell color changing doesn't work without it
+        task_list.setDescendantFocusability( ViewGroup.FOCUS_BLOCK_DESCENDANTS );
+
+        //gets data from file and updates array list
+        update_list( );
+
+        //update the list adapter
+        update_adapter_data( );
+
+        //set the adapter
         adapter = new SimpleAdapter( Tasks.this, tasks, android.R.layout.simple_list_item_2,
                 new String[] { "title", "subtitle" },
                 new int[] { android.R.id.text1, android.R.id.text2 } ) {
@@ -59,17 +70,6 @@ public class Tasks extends AppCompatActivity {
                 return current_tasks.size( );
             }
         };
-
-        //Idk what this is but cell color changing doesn't work without it
-        task_list.setDescendantFocusability( ViewGroup.FOCUS_BLOCK_DESCENDANTS );
-
-        //gets data from file and updates array list
-        update_list( );
-
-        //update the list adapter
-        update_adapter_data( );
-
-        //set the adapter
         task_list.setAdapter( adapter );
 
         //refresh list adapter on UI thread
@@ -144,7 +144,6 @@ public class Tasks extends AppCompatActivity {
                 update_adapter_data( );                         //update adapter data
                 adapter.notifyDataSetChanged( );                //refresh table
                 update_storage( );                              //update internal storage
-                task_list.refreshDrawableState( );              //redraw list
                 return true;
             }
         } );
@@ -173,6 +172,12 @@ public class Tasks extends AppCompatActivity {
                     Toast.makeText( getApplicationContext( ), "cannot add empty",
                             Toast.LENGTH_SHORT ).show( );
                     return; //leave so we don't take any info
+                }
+                if( text.contains( "\\" ) ) {
+                    Toast.makeText( getApplicationContext( ),
+                            "cannot use backslash in name",
+                            Toast.LENGTH_SHORT ).show( );
+                    return;
                 }
 
                 current_tasks.add( new Task( text, false ) );    //add new Task to tasks list
@@ -217,6 +222,12 @@ public class Tasks extends AppCompatActivity {
                             Toast.LENGTH_SHORT ).show( );
                     return; //leave so we don't take any info
                 }
+                if( text.contains( "\\" ) ) {
+                    Toast.makeText( getApplicationContext( ),
+                            "cannot use backslash in name",
+                            Toast.LENGTH_SHORT ).show( );
+                    return;
+                }
 
                 current_tasks.get( _pos ).description = text;    //update object list
                 update_adapter_data( );                          //update adapter data
@@ -240,7 +251,7 @@ public class Tasks extends AppCompatActivity {
         tasks.clear( );
         size = current_tasks.size( );
         //repopulate the list
-        for( int i = 0; i < current_tasks.size( ); ++i ) {
+        for( int i = 0; i < size; ++i ) {
             //String key = "task_" + Integer.toString( i+1 );                           //the key for the ith object is 'task_i'
             //Task task = (Task)getIntent( ).getSerializableExtra( key );               //save the serialized task object
             //current_tasks.add( task );                                                //add this new object to the current cars in the vie
@@ -351,7 +362,7 @@ public class Tasks extends AppCompatActivity {
         update_storage( );
         Intent intent = new Intent( this, MainActivity.class );
         startActivity( intent );
-        finish( );
+        finishAffinity( );
     }
 
     //shows a pop-up with some help information
@@ -377,5 +388,11 @@ public class Tasks extends AppCompatActivity {
 
         //show pop-up
         pop_up.show( );
+    }
+
+    @Override
+    public void onStop( ) {
+        super.onStop( );
+        update_storage( );
     }
 }

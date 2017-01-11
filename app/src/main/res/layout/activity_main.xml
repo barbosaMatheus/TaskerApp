@@ -35,29 +35,6 @@
         android:layout_marginBottom="364dp" />
 
     <Button
-        android:text="shopping"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/slist_button"
-        android:layout_marginTop="18dp"
-        android:layout_below="@+id/tasks_button"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="29dp"
-        android:onClick="button_click_listener"
-        android:textSize="18sp"/>
-
-    <Button
-        android:text="reminder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/alarm_button"
-        android:layout_marginTop="17dp"
-        android:layout_below="@+id/slist_button"
-        android:layout_alignEnd="@+id/slist_button"
-        android:onClick="button_click_listener"
-        android:textSize="18sp"/>
-
-    <Button
         android:text="tasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,6 +42,50 @@
         android:id="@+id/tasks_button"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/slist_button"
+        android:onClick="button_click_listener"
+        android:textSize="18sp"
+        android:layout_alignStart="@+id/slist_button" />
+
+    <Button
+        android:text="reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/alarm_button"
+        android:layout_marginTop="17dp"
+        android:onClick="button_click_listener"
+        android:textSize="18sp"
+        android:layout_below="@+id/slist_button"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/slist_button" />
+
+    <Button
+        android:text="shopping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/slist_button"
+        android:layout_marginTop="18dp"
+        android:onClick="button_click_listener"
+        android:textSize="18sp"
+        android:layout_below="@+id/tasks_button"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="My List 2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/alarm_button"
+        android:layout_alignParentStart="true"
+        android:id="@+id/list2_button"
+        android:onClick="button_click_listener"
+        android:textSize="18sp"/>
+
+    <Button
+        android:text="My List 1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/slist_button"
+        android:layout_alignParentStart="true"
+        android:id="@+id/list1_button"
         android:onClick="button_click_listener"
         android:textSize="18sp"/>
 

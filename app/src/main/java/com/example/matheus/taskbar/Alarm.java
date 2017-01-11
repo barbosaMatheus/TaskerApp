@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -30,7 +31,7 @@ public class Alarm extends AppCompatActivity {
     public TimePicker time_picker;
     public ToggleButton toggle;
     public int alarm_set;
-    private final int OFFSET = 18000;
+    private final int OFFSET = 12000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,9 @@ public class Alarm extends AppCompatActivity {
             calendar.set( Calendar.HOUR_OF_DAY, time_picker.getHour( ) );
             calendar.set( Calendar.MINUTE, time_picker.getMinute( ) );
             Intent intent = new Intent( Alarm.this, AlarmReceiver.class );
+            final EditText edit = ( EditText ) this.findViewById( R.id.reminder_text );
+            final String text = edit.getText( ).toString( );
+            intent.putExtra( "msg", text );
             pending_intent = PendingIntent.getBroadcast( Alarm.this, 0, intent, 0 );
             alarm_manager.setExact( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis( )-OFFSET, pending_intent );
             alarm_set = 1;
@@ -110,7 +114,7 @@ public class Alarm extends AppCompatActivity {
         super.onBackPressed( );
         Intent intent = new Intent( this, MainActivity.class );
         startActivity( intent );
-        finish( );
+        finishAffinity( );
     }
 
     //shows a pop-up with some help information
@@ -123,8 +127,9 @@ public class Alarm extends AppCompatActivity {
                 " meetings and timed activities, it is not particularly meant to be used as a wake" +
                 "-up alarm in the morning.\n\nThe interface provides simplicity. To set the alarm" +
                 ", pick the hour and minute using the hands of the clock (make sure to pick AM/PM" +
-                " correctly) and set it by clicking the toggle button in the center. The button" +
-                " text will now read \"ON\". Use the same toggle button to disable the " +
+                " correctly) and set it by clicking the toggle button in the center. The button " +
+                "text will now read \"ON\"You may also wish to provide your own reminder text in" +
+                " the area just below time picker. Use the same toggle button to disable the " +
                 "alarm. Once the alarm sounds, a notification will appear on your screen. Click " +
                 "the notification (may have to unlock screen first) to open up the alarm screen" +
                 " and then click the toggle button to disable the alarm and turn off the sound.";
