@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -41,6 +42,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list);
         getSupportActionBar( ).setTitle( "Shopping List" );
+        getSupportActionBar( ).setDisplayHomeAsUpEnabled( true );
 
         //initialize members
         current_items = new ArrayList<>( );
@@ -430,8 +432,8 @@ public class ShoppingListActivity extends AppCompatActivity {
     //when the back button is pressed
     @Override
     public void onBackPressed( ) {
-        super.onBackPressed( );
         update_storage( );
+        super.onBackPressed( );
     }
 
     //shows a pop-up with some help information
@@ -465,5 +467,16 @@ public class ShoppingListActivity extends AppCompatActivity {
     public void onStop( ) {
         super.onStop( );
         update_storage( );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch( item.getItemId( ) ) {
+            case android.R.id.home:
+                this.onBackPressed( );
+                return true;
+            default:
+                return super.onOptionsItemSelected( item );
+        }
     }
 }

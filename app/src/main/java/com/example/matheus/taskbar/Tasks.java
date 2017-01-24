@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -35,6 +36,7 @@ public class Tasks extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         getSupportActionBar( ).setTitle( "Tasks" );
+        getSupportActionBar( ).setDisplayHomeAsUpEnabled( true );
         //initialize members
         current_tasks = new ArrayList<>( );
         tasks = new ArrayList<>( );
@@ -358,8 +360,8 @@ public class Tasks extends AppCompatActivity {
     //when the back button is pressed
     @Override
     public void onBackPressed( ) {
-        super.onBackPressed( );
         update_storage( );
+        super.onBackPressed( );
     }
 
     //shows a pop-up with some help information
@@ -391,5 +393,16 @@ public class Tasks extends AppCompatActivity {
     public void onStop( ) {
         super.onStop( );
         update_storage( );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch( item.getItemId( ) ) {
+            case android.R.id.home:
+                this.onBackPressed( );
+                return true;
+            default:
+                return super.onOptionsItemSelected( item );
+        }
     }
 }

@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ public class Alarm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
         getSupportActionBar( ).setTitle( "Alarm/Reminder" );
+        getSupportActionBar( ).setDisplayHomeAsUpEnabled( true );
 
         //initialize members and configure
         //the toggle button accordingly
@@ -103,8 +105,8 @@ public class Alarm extends AppCompatActivity {
     //when the back button is pressed
     @Override
     public void onBackPressed( ) {
-        super.onBackPressed( );
         update_storage( );
+        super.onBackPressed( );
     }
 
     //shows a pop-up with some help information
@@ -130,5 +132,16 @@ public class Alarm extends AppCompatActivity {
 
         //show pop-up
         pop_up.show( );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch( item.getItemId( ) ) {
+            case android.R.id.home:
+                this.onBackPressed( );
+                return true;
+            default:
+                return super.onOptionsItemSelected( item );
+        }
     }
 }

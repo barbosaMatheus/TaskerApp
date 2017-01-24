@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -39,6 +40,7 @@ public class CustomListActivity extends AppCompatActivity {
         //change action bar title according to button title
         String title = getIntent( ).getStringExtra( "title" );
         getSupportActionBar( ).setTitle( title );
+        getSupportActionBar( ).setDisplayHomeAsUpEnabled( true );
 
         //initialize member variables
         custom_index = getIntent( ).getIntExtra( "index", 0 );
@@ -367,7 +369,18 @@ public class CustomListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed( ) {
-        super.onBackPressed( );
         update_storage( );
+        super.onBackPressed( );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch( item.getItemId( ) ) {
+            case android.R.id.home:
+                this.onBackPressed( );
+                return true;
+            default:
+                return super.onOptionsItemSelected( item );
+        }
     }
 }

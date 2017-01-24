@@ -3,6 +3,7 @@ package com.example.matheus.taskbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 public class MoreActivity extends AppCompatActivity {
@@ -12,6 +13,7 @@ public class MoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more);
         getSupportActionBar( ).setTitle( "More" );
+        getSupportActionBar( ).setDisplayHomeAsUpEnabled( true );
     }
 
     public void show_pop_up( View view ) {
@@ -67,5 +69,16 @@ public class MoreActivity extends AppCompatActivity {
 
         //show pop-up
         pop_up.show( );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch( item.getItemId( ) ) {
+            case android.R.id.home:
+                super.onBackPressed( );
+                return true;
+            default:
+                return super.onOptionsItemSelected( item );
+        }
     }
 }
