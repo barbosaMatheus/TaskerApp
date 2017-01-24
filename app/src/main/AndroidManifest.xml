@@ -43,7 +43,7 @@
             android:name=".CustomListActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".MoreActivity"></activity>
     </application>
 
 </manifest>

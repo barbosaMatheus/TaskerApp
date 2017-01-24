@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final String help_message = "Welcome, and thank you for downloading Tasker!" +
+    public final String help_message = "Welcome, and thank you for downloading Tasker!a" +
             "\n\nIMPORTANT: please read the help text on each page at least once. " +
             "Some buttons have multiple functions which are explained in the help text." +
             "To set an alarm go to the Alarm/Reminder screen by clicking \"REMINDER\" on the main " +
@@ -143,6 +143,10 @@ public class MainActivity extends AppCompatActivity {
             final String title = ( ( Button ) this.findViewById( R.id.list2_button ) ).getText( ).toString( );
             intent.putExtra( "title", title );
             intent.putExtra( "index", 2 );
+            startActivity( intent );
+        }
+        else if( view == this.findViewById( R.id.more_button ) ) { //if more is pressed
+            Intent intent = new Intent( this, MoreActivity.class );
             startActivity( intent );
         }
     }

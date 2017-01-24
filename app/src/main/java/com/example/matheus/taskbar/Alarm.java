@@ -23,15 +23,12 @@ import android.widget.ToggleButton;
 
 import java.util.Calendar;
 
-//TODO: comment this damn file
-
 public class Alarm extends AppCompatActivity {
-    AlarmManager alarm_manager;
-    private PendingIntent pending_intent;
-    public TimePicker time_picker;
-    public ToggleButton toggle;
-    public int alarm_set;
-    private final int OFFSET = 12000;
+    AlarmManager alarm_manager;                //alarm manager used to set the alarm
+    private PendingIntent pending_intent;      //pending intent object starts the alarm service
+    public TimePicker time_picker;             //time picker object used to get user input
+    public ToggleButton toggle;                //toggle button object
+    public int alarm_set;                      //to know if an alarm is set that way we can change the toggle button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,46 +36,36 @@ public class Alarm extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
         getSupportActionBar( ).setTitle( "Alarm/Reminder" );
 
+        //initialize members and configure
+        //the toggle button accordingly
         time_picker = ( TimePicker ) findViewById( R.id.alarm_time );
         alarm_manager = ( AlarmManager ) getSystemService( ALARM_SERVICE );
         toggle = ( ToggleButton ) this.findViewById( R.id.alarm_toggle );
         if( alarm_is_set( ) ) toggle.setChecked( true );
         else toggle.setChecked( false );
-
-        /*//create and set up dialog box object
-        AlertDialog.Builder pop_up = new AlertDialog.Builder( this );
-        pop_up.setTitle( "Information" );
-        pop_up.setIcon( R.drawable.logo );
-        pop_up.setMessage( "This feature is still under development. The alarm works, it will sound " +
-                "at the time set, and cancelling it will keep it from sounding. Right now the main " +
-                "issue is not being able to cancel the alarm while it's ringing. Currently, the " +
-                "sound plays for a few seconds and stops itself. One way to manually stop it is to " +
-                "keep the app open and then close it when the alarm sounds. Another main issue is that" +
-                " the user must reset the ALARM toggle manually after the alarm sounds.");
-
-        //set up buttons for dialog box
-        pop_up.setPositiveButton( "OK", null );
-
-        //show pop-up
-        pop_up.show( );*/
     }
 
+    //called when the alarm toggle
+    //button is clicked
     public void on_toggle( View view ) {
-        if ( toggle.isChecked( ) ) {
-            Calendar calendar = Calendar.getInstance( );
-            calendar.set( Calendar.HOUR_OF_DAY, time_picker.getHour( ) );
-            calendar.set( Calendar.MINUTE, time_picker.getMinute( ) );
-            Intent intent = new Intent( Alarm.this, AlarmReceiver.class );
+        if ( toggle.isChecked( ) ) {  //if it just toggled on
+            Calendar calendar = Calendar.getInstance( );                     //get a calendar object
+            calendar.set( Calendar.HOUR_OF_DAY, time_picker.getHour( ) );    //set the hour
+            calendar.set( Calendar.MINUTE, time_picker.getMinute( ) );       //set the minute
+            calendar.set( Calendar.SECOND, 0 );                              //set seconds
+            Intent intent = new Intent( Alarm.this, AlarmReceiver.class );   //make the intent to alarm receiver
             final EditText edit = ( EditText ) this.findViewById( R.id.reminder_text );
             final String text = edit.getText( ).toString( );
-            intent.putExtra( "msg", text );
-            pending_intent = PendingIntent.getBroadcast( Alarm.this, 0, intent, 0 );
-            alarm_manager.setExact( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis( )-OFFSET, pending_intent );
+            intent.putExtra( "msg", text );                                  //put the user message in the intent
+            pending_intent = PendingIntent.getBroadcast( Alarm.this, 0, intent, 0 );  //get pending intent from intent
+            alarm_manager.setExact( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis( ), pending_intent );
             alarm_set = 1;
             //Toast.makeText( getApplicationContext( ), "alarm is set", Toast.LENGTH_SHORT ).show( );
-        } else {
+        } else {  //if it just toggled off
+            //stop the ringtone service if it's playing
             Intent ringing = new Intent( getApplicationContext( ), RingtonePlayingService.class );
             stopService( ringing );
+            //cancel the pending intent for alarm
             Intent intent = new Intent( Alarm.this, AlarmReceiver.class );
             pending_intent = PendingIntent.getBroadcast( Alarm.this, 0, intent, 0 );
             alarm_manager.cancel( pending_intent );
@@ -88,10 +75,13 @@ public class Alarm extends AppCompatActivity {
         update_storage( );
     }
 
+    //finds out if an alarm
+    //is already set and returns
+    //true if it's set, false otw
     public boolean alarm_is_set( ) {
         SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
         alarm_set = sp_file.getInt( "alarm_set", -1 );                          //get number of alarms set
-        if( alarm_set < 0 ) {                                                        //if empty we make a new field called size
+        if( alarm_set < 0 ) {                                                   //if empty we make a new field called alarm_set
             SharedPreferences.Editor editor = sp_file.edit( );
             editor.putInt( "alarm_set", 0 );
             editor.apply( );
@@ -100,6 +90,8 @@ public class Alarm extends AppCompatActivity {
         return alarm_set == 1;
     }
 
+    //updates persistent data
+    //based on temporary changes
     public void update_storage( ) {
         SharedPreferences sp_file = getPreferences(Context.MODE_PRIVATE);     //make shared preferences object
         SharedPreferences.Editor editor = sp_file.edit();                      //make editor object
@@ -126,7 +118,7 @@ public class Alarm extends AppCompatActivity {
                 "-up alarm in the morning.\n\nThe interface provides simplicity. To set the alarm" +
                 ", pick the hour and minute using the hands of the clock (make sure to pick AM/PM" +
                 " correctly) and set it by clicking the toggle button in the center. The button " +
-                "text will now read \"ON\"You may also wish to provide your own reminder text in" +
+                "text will now read \"ON\". You may also wish to provide your own reminder text in" +
                 " the area just below time picker. Use the same toggle button to disable the " +
                 "alarm. Once the alarm sounds, a notification will appear on your screen. Click " +
                 "the notification (may have to unlock screen first) to open up the alarm screen" +

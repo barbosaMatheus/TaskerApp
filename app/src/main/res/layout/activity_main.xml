@@ -95,4 +95,15 @@
         android:textSize="18sp"
         android:textColor="@android:color/white"/>
 
+    <Button
+        android:text="more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/more_button"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:onClick="button_click_listener" />
+
 </RelativeLayout>

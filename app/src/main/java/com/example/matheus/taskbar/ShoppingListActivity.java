@@ -121,11 +121,15 @@ public class ShoppingListActivity extends AppCompatActivity {
                     view.setBackgroundResource( R.color.selected_row );
                     current_items.get( i ).selected = true;
                     highlighted_total += current_items.get( i ).price;
+                    final int times_one_hundred = ( int )( highlighted_total ) * 100;
+                    highlighted_total = ( double )( times_one_hundred ) / 100.0;
                 }
                 else { //if being lowlighted
                     view.setBackgroundResource( android.R.color.transparent );
                     current_items.get( i ).selected = false;
                     highlighted_total -= current_items.get( i ).price;
+                    final int times_one_hundred = ( int )( highlighted_total ) * 100;
+                    highlighted_total = ( double )( times_one_hundred ) / 100.0;
                 }
 
                 update_adapter_data( );
@@ -198,6 +202,9 @@ public class ShoppingListActivity extends AppCompatActivity {
             if( selected ) highlighted_total += price;
             current_items.add( new Item( text, price, selected ) );      //add data to array list
         }
+
+        final int times_one_hundred = ( int )( highlighted_total ) * 100;
+        highlighted_total = ( double )( times_one_hundred ) / 100.0;
     }
 
     public boolean extract_selected( String data ) {
