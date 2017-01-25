@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -292,12 +293,14 @@ public class Tasks extends AppCompatActivity {
     //gets data from "shared preferences"
     //and updates the array list
     public void update_list( ) {
+        SharedPreferences g_file = PreferenceManager.getDefaultSharedPreferences( getBaseContext( ) );
+        SharedPreferences.Editor g_editor = g_file.edit( );
         SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
-        size = sp_file.getInt( "size", 0 );                                     //get size from the file
+        size = g_file.getInt( "size", 0 );                                     //get size from the file
         if( size < 1 ) {                                                        //if empty we make a new field called size
             SharedPreferences.Editor editor = sp_file.edit( );
-            editor.putInt( "size", 0 );
-            editor.apply( );
+            g_editor.putInt( "size", 0 );
+            g_editor.apply( );
             return;
         }
 
@@ -334,8 +337,10 @@ public class Tasks extends AppCompatActivity {
     //updates the persistent data based
     //on the current array list data
     public void update_storage( ) {
-        SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
-        SharedPreferences.Editor editor = sp_file.edit( );                      //make editor object
+        SharedPreferences g_file = PreferenceManager.getDefaultSharedPreferences( getBaseContext( ) );     //make shared preferences object
+        SharedPreferences.Editor g_editor = g_file.edit( );                      //make editor object
+        SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );
+        SharedPreferences.Editor editor = sp_file.edit( );
 
         for( int i = 0; i < size; ++i ) {                                       //remove only task objects
             final String key = "task_" + Integer.toString( i );
@@ -343,8 +348,8 @@ public class Tasks extends AppCompatActivity {
             editor.apply( );                                                    //apply changes
         }
 
-        editor.putInt( "size", current_tasks.size( ) );                         //write new size
-        editor.apply( );
+        g_editor.putInt( "size", current_tasks.size( ) );                         //write new size
+        g_editor.apply( );
         size = current_tasks.size( );                                           //update size
 
         for( int i = 0; i < current_tasks.size( ); ++i ) {                      //loop through array list

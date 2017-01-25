@@ -35,7 +35,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     ListView item_list;                             //ListView instance
     SimpleAdapter adapter;                          //list adapter object
     public int size;                                //number of items saved
-    public double highlighted_total;                //total price for highlighted items
+    public int highlighted_total;                //total price for highlighted items
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         current_items = new ArrayList<>( );
         items = new ArrayList<>( );
         item_list = (ListView) this.findViewById( R.id.list2 );
-        highlighted_total = 0.0;
+        highlighted_total = 0;
 
         //Idk what this is but cell color changing doesn't work without it
         item_list.setDescendantFocusability( ViewGroup.FOCUS_BLOCK_DESCENDANTS );
@@ -123,15 +123,15 @@ public class ShoppingListActivity extends AppCompatActivity {
                     view.setBackgroundResource( R.color.selected_row );
                     current_items.get( i ).selected = true;
                     highlighted_total += current_items.get( i ).price;
-                    final int times_one_hundred = ( int )( highlighted_total ) * 100;
-                    highlighted_total = ( double )( times_one_hundred ) / 100.0;
+                    /*final int times_one_hundred = ( int )( highlighted_total * 100 );
+                    highlighted_total = ( double )( times_one_hundred ) / 100.0;*/
                 }
                 else { //if being lowlighted
                     view.setBackgroundResource( android.R.color.transparent );
                     current_items.get( i ).selected = false;
                     highlighted_total -= current_items.get( i ).price;
-                    final int times_one_hundred = ( int )( highlighted_total ) * 100;
-                    highlighted_total = ( double )( times_one_hundred ) / 100.0;
+                    /*final int times_one_hundred = ( int )( highlighted_total * 100 );
+                    highlighted_total = ( double )( times_one_hundred ) / 100.0;*/
                 }
 
                 update_adapter_data( );
@@ -159,7 +159,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                 current_items.clear( );                         //clear all contents
                 update_adapter_data( );
                 adapter.notifyDataSetChanged( );                //refresh table
-                highlighted_total = 0.0;
+                highlighted_total = 0;
                 update_storage( );                              //update internal storage
                 return true;
             }
@@ -173,7 +173,8 @@ public class ShoppingListActivity extends AppCompatActivity {
             public boolean onLongClick( View view ) {
                 if( highlighted_total > 0.0 ) {
                     Toast.makeText( getApplicationContext(),
-                            "highlighted total: $" + Double.toString( highlighted_total ),
+                            "highlighted total: $" +
+                            Double.toString( ( double )( highlighted_total )/100.0 ),
                             Toast.LENGTH_SHORT ).show( );
                 }
                 return true;
@@ -199,14 +200,18 @@ public class ShoppingListActivity extends AppCompatActivity {
             String key = "item_" + Integer.toString( i );                       //create key
             final String data = sp_file.getString( key, "" );
             final String text = extract_text( data );
-            final double price = extract_price( data );
+            final int price = extract_price( data );
             final boolean selected = extract_selected( data );
-            if( selected ) highlighted_total += price;
+            if( selected ) {
+                /*final int times_100 = ( int )( price * 100.0 );
+                highlighted_total += ( double )( times_100 ) / 100.0;*/
+                highlighted_total += price;
+            }
             current_items.add( new Item( text, price, selected ) );      //add data to array list
         }
 
-        final int times_one_hundred = ( int )( highlighted_total ) * 100;
-        highlighted_total = ( double )( times_one_hundred ) / 100.0;
+        /*final int times_one_hundred = ( int )( highlighted_total * 100.0 );
+        highlighted_total = ( double )( times_one_hundred ) / 100.0;*/
     }
 
     public boolean extract_selected( String data ) {
@@ -224,7 +229,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         return builder.toString( );
     }
 
-    public double extract_price( String data ) {
+    public int extract_price( String data ) {
         int i = 0;
         while( ( i < data.length( ) ) && ( data.charAt( i ) != '\\' ) )  i += 1;
         i += 1;
@@ -233,8 +238,8 @@ public class ShoppingListActivity extends AppCompatActivity {
             builder.append( data.charAt( i ) );
             i += 1;
         }
-        if( builder.length( ) >= 3 ) return Double.valueOf( builder.toString( ) );
-        return 0.0;
+        if( builder.length( ) >= 3 ) return Integer.valueOf( builder.toString( ) );
+        return 0;
     }
 
     //returns an adapter object based on modified task data
@@ -249,7 +254,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             //current_items.add( item );                                                //add this new object to the current cars in the vie
             Map<String, String> task_data = new HashMap<>(2);                           //this map will hold one item to be displayed on the list
             String title = current_items.get( i ).description + "\t\t($"
-                    + Double.toString( current_items.get( i ).price ) + ")";            //build the title
+                    + Double.toString( ( double )( current_items.get( i ).price )/100.0 ) + ")"; //build the title
             String subtitle =  current_items.get( i ).selected ? "Picked Up" : "Needed";   //build subtitle
             task_data.put( "title", title );                                            //put these in the map
             task_data.put( "subtitle", subtitle );
@@ -275,7 +280,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         input.setText( current_items.get( pos ).description );
         price.setInputType( InputType.TYPE_NUMBER_FLAG_DECIMAL );
         price.setRawInputType( Configuration.KEYBOARD_12KEY );
-        price.setText( Double.toString( current_items.get( pos ).price ) );
+        price.setText( Double.toString( ( double )( current_items.get( pos ).price )/100.0 ) );
         layout.setOrientation( LinearLayout.VERTICAL );
         layout.addView( input );
         layout.addView( price );
@@ -287,7 +292,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             public void onClick( DialogInterface dialog, int which ) {
                 String text = input.getText( ).toString( );
                 final String price_as_text = price.getText( ).toString( );
-                Double item_price = current_items.get( _pos ).price;
+                int item_price = current_items.get( _pos ).price;
                 if( text.isEmpty( ) ) { //check for no text
                     //text = current_items.get( _pos ).description;
                     return;
@@ -300,7 +305,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                     return;
                 }
                 if( !price_as_text.isEmpty( ) ) {
-                    item_price = Double.valueOf( price_as_text );
+                    item_price = ( int )( Double.valueOf( price_as_text ) * 100.0 );
                 }
 
                 current_items.get( _pos ).description = text;
@@ -338,7 +343,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         for( int i = 0; i < current_items.size( ); ++i ) {                      //loop through array list
             String key = "item_" + Integer.toString( i );                       //create key
             final String value = current_items.get( i ).description +
-                    "\\" + Double.toString( current_items.get( i ).price )
+                    "\\" + Integer.toString( current_items.get( i ).price )
                     + ( current_items.get( i ).selected ? "\\1" : "\\0" );
             editor.putString( key, value );                                     //write to storage
             editor.apply( );
@@ -397,7 +402,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             public void onClick( DialogInterface dialog, int which ) {
                 final String text = input.getText( ).toString( );
                 final String price_as_string = price.getText( ).toString( );
-                double item_price = 0.0;
+                int item_price = 0;
                 if( text.isEmpty( ) ) { //check for no text
                     Toast.makeText( getApplicationContext( ), "cannot add empty",
                             Toast.LENGTH_SHORT ).show( );
@@ -409,7 +414,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                     return; //leave so we don't take any info
                 }
                 if( !price_as_string.isEmpty( ) ) {
-                    item_price = Double.valueOf( price_as_string );
+                    item_price = ( int )( Double.valueOf( price_as_string ) * 100.0 );
                 }
 
                 current_items.add( new Item( text, item_price, false ) );

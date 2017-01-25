@@ -17,7 +17,7 @@ public class MoreActivity extends AppCompatActivity {
     }
 
     public void show_pop_up( View view ) {
-        String title, message;
+        String title = "", message = "";
 
         if( view == this.findViewById( R.id.ads ) ) { //if why ads button is pressed
             title = "Why do I see Ads?";
@@ -53,9 +53,23 @@ public class MoreActivity extends AppCompatActivity {
             title = "Usage Tips";
             message = "This section will describe how to use this app daily and effectively.";
         }
-        else {
-            title = "";
-            message = "";
+        else if( view == this.findViewById( R.id.credits ) ) { //if credits is clicked
+            title = "Credits";
+            message = "Many thanks to all that have made this possible!\n\nDevelopers/Testers\n-> "
+            + "Matheus Barbosa (main developer/creator)\n-> Ryan McIver (alpha tester, contributor)"
+            + "\n\nImages\n-> pixabay.com (background)\n-> flamingtext.com (logo & graphical name)";
+        }
+        else if( view == this.findViewById( R.id.features ) ) { //if new features is clicked
+            title = "New Features";
+            message = "This page will be periodically updated to show the last five new features " +
+                    "which have been implemented into Tasker, from newest to oldest (1-5).\n\n1. " +
+                    "Change custom list names (on the left side of the screen in Home) by long-pr" +
+                    "essing on the button.\n2. Highlighted list items will stay highlighted even " +
+                    "if the app closes and restarts.\n3. Any text entered in the field above the " +
+                    "reminder \"ON\" button will pop-up in the notification when the reminder goe" +
+                    "s off.\n4. When \"ADD ITEM\" (in shooping list) is long-pressed, the price o" +
+                    "f all highlighted items will appear on the screen momentarily.\n5. You now h" +
+                    "ave the ability to add a price to any item in your shopping list.";
         }
 
         //create and set up dialog box object

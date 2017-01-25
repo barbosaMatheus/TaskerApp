@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -159,13 +160,14 @@ public class CustomListActivity extends AppCompatActivity {
     //gets data from "shared preferences"
     //and updates the array list
     public void update_list( ) {
-        SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
+        SharedPreferences g_file = PreferenceManager.getDefaultSharedPreferences( getBaseContext( ) );     //make shared preferences object
         final String size_key = "size" + Integer.toString( custom_index + 2 );
-        size = sp_file.getInt( size_key, 0 );                                   //get size from the file
+        SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );
+        size = g_file.getInt( size_key, 0 );                                    //get size from the file
         if( size < 1 ) {                                                        //if empty we make a new field called size
-            SharedPreferences.Editor editor = sp_file.edit( );
-            editor.putInt( size_key, 0 );
-            editor.apply( );
+            SharedPreferences.Editor g_editor = g_file.edit( );
+            g_editor.putInt( size_key, 0 );
+            g_editor.apply( );
             return;
         }
 
@@ -269,6 +271,8 @@ public class CustomListActivity extends AppCompatActivity {
     //updates the persistent data based
     //on the current array list data
     public void update_storage( ) {
+        SharedPreferences g_file = PreferenceManager.getDefaultSharedPreferences( getBaseContext( ) );
+        SharedPreferences.Editor g_editor = g_file.edit( );
         SharedPreferences sp_file = getPreferences( Context.MODE_PRIVATE );     //make shared preferences object
         SharedPreferences.Editor editor = sp_file.edit( );                      //make editor object
 
@@ -280,8 +284,8 @@ public class CustomListActivity extends AppCompatActivity {
         }
 
         final String size_key = "size" + Integer.toString( custom_index + 2 );
-        editor.putInt( size_key, object_list.size( ) );                         //write new size
-        editor.apply( );
+        g_editor.putInt( size_key, object_list.size( ) );                         //write new size
+        g_editor.apply( );
         size = object_list.size( );                                           //update size
 
         for( int i = 0; i < size; ++i ) {                      //loop through array list
@@ -368,7 +372,7 @@ public class CustomListActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed( ) {
+    public void onBackPressed( )  {
         update_storage( );
         super.onBackPressed( );
     }

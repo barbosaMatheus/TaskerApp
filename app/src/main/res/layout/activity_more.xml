@@ -37,11 +37,34 @@
         android:text="why do i see ads?"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/contribute"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
         android:id="@+id/ads"
         android:textSize="18sp"
         android:textColor="@android:color/white"
-        android:onClick="show_pop_up" />
+        android:onClick="show_pop_up"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="credits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tips"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:id="@+id/credits"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:onClick="show_pop_up"/>
+
+    <Button
+        android:text="new features"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contribute"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:id="@+id/features"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:onClick="show_pop_up"/>
 </RelativeLayout>
