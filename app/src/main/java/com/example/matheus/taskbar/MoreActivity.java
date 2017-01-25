@@ -62,13 +62,13 @@ public class MoreActivity extends AppCompatActivity {
         else if( view == this.findViewById( R.id.features ) ) { //if new features is clicked
             title = "New Features";
             message = "This page will be periodically updated to show the last five new features " +
-                    "which have been implemented into Tasker, from newest to oldest (1-5).\n\n1. " +
+                    "which have been implemented into Tasker, from newest to oldest (1-5).\n\n\n1. " +
                     "Change custom list names (on the left side of the screen in Home) by long-pr" +
-                    "essing on the button.\n2. Highlighted list items will stay highlighted even " +
-                    "if the app closes and restarts.\n3. Any text entered in the field above the " +
+                    "essing on the button.\n\n2. Highlighted list items will stay highlighted even " +
+                    "if the app closes and restarts.\n\n3. Any text entered in the field above the " +
                     "reminder \"ON\" button will pop-up in the notification when the reminder goe" +
-                    "s off.\n4. When \"ADD ITEM\" (in shooping list) is long-pressed, the price o" +
-                    "f all highlighted items will appear on the screen momentarily.\n5. You now h" +
+                    "s off.\n\n4. When \"ADD ITEM\" (in shooping list) is long-pressed, the price o" +
+                    "f all highlighted items will appear on the screen momentarily.\n\n5. You now h" +
                     "ave the ability to add a price to any item in your shopping list.";
         }
 
