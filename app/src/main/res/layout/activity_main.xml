@@ -23,18 +23,6 @@
         android:textSize="18sp"
         android:textColor="@android:color/white"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/title"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/imageView2"
-        android:layout_above="@+id/help_button"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="153dp"
-        android:layout_marginBottom="364dp" />
-
     <Button
         android:text="tasks"
         android:layout_width="wrap_content"
@@ -105,5 +93,14 @@
         android:textSize="18sp"
         android:textColor="@android:color/white"
         android:onClick="button_click_listener" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/title"
+        android:id="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/list1_button"
+        android:layout_marginBottom="150dp"/>
 
 </RelativeLayout>

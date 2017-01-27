@@ -66,8 +66,8 @@ public class MoreActivity extends AppCompatActivity {
                     "Change custom list names (on the left side of the screen in Home) by long-pr" +
                     "essing on the button.\n\n2. Highlighted list items will stay highlighted even " +
                     "if the app closes and restarts.\n\n3. Any text entered in the field above the " +
-                    "reminder \"ON\" button will pop-up in the notification when the reminder goe" +
-                    "s off.\n\n4. When \"ADD ITEM\" (in shooping list) is long-pressed, the price o" +
+                    "reminder \"ON\" button, will be in the notification when the reminder goe" +
+                    "s off.\n\n4. When \"ADD ITEM\" (in shopping list) is long-pressed, the price o" +
                     "f all highlighted items will appear on the screen momentarily.\n\n5. You now h" +
                     "ave the ability to add a price to any item in your shopping list.";
         }
