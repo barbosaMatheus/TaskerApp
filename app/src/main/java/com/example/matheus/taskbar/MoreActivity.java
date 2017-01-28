@@ -20,7 +20,7 @@ public class MoreActivity extends AppCompatActivity {
         String title = "", message = "";
 
         if( view == this.findViewById( R.id.ads ) ) { //if why ads button is pressed
-            title = "Why do I see Ads?";
+            title = "Why do I See Ads?";
             message = "This application is provided to any and all Android users, at no cost whatsoever." +
                     " In short, to make up for the time spent building and (still) maintaining this app," +
                     " it has ads. However, we know that ads are annoying, so we have put them in this" +
@@ -51,7 +51,25 @@ public class MoreActivity extends AppCompatActivity {
         }
         else if( view == this.findViewById( R.id.tips ) ) { //if usage tips is clicked
             title = "Usage Tips";
-            message = "This section will describe how to use this app daily and effectively.";
+            message = "This section describes how to use this application daily and productively." +
+                    " It may be updated from time to time as new features are added.\n\n- Check " +
+                    "your lists multiple times per day.\n\n- Separate your tasks project by project." +
+                    " Do this by using the customizable lists in Home. Simply long click on one of" +
+                    " the buttons and a pop-up will allow you to change its name.\n\n- Use emojis in" +
+                    " your task descriptions to help your brain make connections. I have five or " +
+                    "six different emojis that mean specific things so one quick glance at the " +
+                    "screen can tell me a lot of what's on the list without actually reading it." +
+                    "\n\n- Use the reminder alarm throughout the day, but use your phone's built-" +
+                    "in alarm app to wake up in the morning. I often use the reminders to help " +
+                    "myself leave for work on time.\n\n- Use the shopping list, and use the \'price" +
+                    " add\' feature to keep yourself on budget. To use this feature simply click " +
+                    "on the items you have picked up in order to highlight them. Instead of " +
+                    " pressing \'CLEAR\' to clear the items off the list, long press on \'ADD ITEM\'" +
+                    " and the app will add up the total price of the highlighted items then show" +
+                    " it on the screen momentarily.\n\n- Use highlight to mark tasks/items that" +
+                    " you are currently working on, or should work on next.\n\n- If for some reason" +
+                    " you need to reinstall the app, or are switching phones, take screenshots of " +
+                    "your lists and you can easily replicate them on a fresh install of the app.";
         }
         else if( view == this.findViewById( R.id.credits ) ) { //if credits is clicked
             title = "Credits";
