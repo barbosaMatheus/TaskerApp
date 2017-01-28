@@ -238,7 +238,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             builder.append( data.charAt( i ) );
             i += 1;
         }
-        if( builder.length( ) >= 3 ) return Integer.valueOf( builder.toString( ) );
+        if( builder.length( ) >= 1 ) return Integer.valueOf( builder.toString( ) );
         return 0;
     }
 
